@@ -1,0 +1,29 @@
+export class QuestionModel {
+  id: number;
+  userId: number;
+  name: string;
+  customerId: number;
+  customerName: string;
+  question: string;
+  slug: string;
+  publishedAt: string;
+  hasAnswer: number;
+  status: number;
+  diseaseId: number;
+  categoryId: number;
+  categoryName: string;
+  tagId: any;
+  tags: any;
+  age: number;
+  gender: number;
+  highlight: number;
+  isDelete: number;
+  visible: number;
+  createdAt: number;
+  updatedAt: string;
+  phone: string;
+  email: string;
+  answer: any;
+  authorId: number;
+  notified: number;
+}

@@ -1,0 +1,62 @@
+<div class="body-show-promotion">
+  <div class="form-group row">
+    <label class="label col-sm-4 col-form-label"></label>
+    <div class="col-sm-8">
+      <a href="https://static-prod.5nhatnhat.com/img/productimage/nhat-nhat-04-mat-ngu_8a351942-565c-4605-a86d-249da9115de5_large.png" target="_blank"><nb-icon icon="cloud-download-outline"></nb-icon>Tải danh sách khách hàng mẫu</a>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label class="label col-sm-4 col-form-label">Chon tệp tin</label>
+    <div class="col-sm-8">
+      <input type="file" (change)="addfile($event)" placeholder="Upload file"
+             accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+      <div class="form-error" *ngIf="formError == true">Bạn hãy chọn file danh sách cơ hội</div>
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-8">
+    <nb-alert style="text-align: center" status="warning" *ngIf="errorLog != ''">{{errorLog}}</nb-alert>
+    </div>
+    <div class="col-sm-2"></div>
+  </div>
+  <div class="form-group row" *ngIf="fileList.length > 0">
+    <table class="table table-hover table-bordered">
+      <thead>
+      <tr class="heart">
+        <th>Họ tên tên</th>
+        <th>Số điện thoại</th>
+        <th>Email</th>
+        <th>Facebook</th>
+        <th>Nội dung</th>
+        <th>Nguôn tạo</th>
+        <th>Sản phẩm</th>
+        <th>Bẹnh lý</th>
+        <th>Nội dung</th>
+        <th>Ngày tạo</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let ticket of fileList; let i = index" class="{{ticket.clError}}">
+        <td>{{ticket.fullName}}</td>
+        <td>{{ticket.phone}}</td>
+        <td>{{ticket.email}}</td>
+        <td>{{ticket.facebook}}</td>
+        <td>{{ticket.description}}</td>
+        <td>{{ticket.oppSource}}</td>
+        <td>{{ticket.product}}</td>
+        <td>{{ticket.tags}}</td>
+        <td>{{ticket.address}}</td>
+        <td>{{ticket.createdOn}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="form-group row">
+    <div class="col-sm-12">
+      <div class=" buttons-row">
+        <button (click)="updateOpp()" type="submit" nbButton status="info" *ngIf="checkUpdate == true">Tạo khách hàng</button>
+      </div>
+    </div>
+  </div>
+</div>

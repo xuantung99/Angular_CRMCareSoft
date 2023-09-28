@@ -1,0 +1,9 @@
+[
+  {
+    "context": [
+      "/api/**"
+    ],
+    "target": "http://192.168.100.99:5607",
+    "secure": false
+  }
+]

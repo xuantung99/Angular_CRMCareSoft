@@ -1,0 +1,193 @@
+<nb-card>
+  <nb-card-header>
+    <div class="col-12">
+      <div class="row">
+        <div class="col-sm-4">Tìm kiếm thông tin khách hàng</div>
+        <div class="col-sm-4">
+          <ng-select style="min-width: 300px"
+                     [items]="dataCustomer"
+                     bindLabel="phone"
+                     [minTermLength]="3"
+                     [addTag]="addTagFn"
+                     (ngModelChange)="selectCustomer($event)"
+                     [loading]="peopleLoading"
+                     placeholder="Tìm kiếm số điện thoại | email"
+                     typeToSearchText="Nhập vào ít nhất 3 kí tự để tìm kiếm"
+                     [typeahead]="peopleInput$"
+                     [(ngModel)]="customer">
+            <ng-template ng-label-tmp let-item="item">
+              <span>{{ item.phone }} {{ item.fullName }}</span>
+            </ng-template>
+            <ng-template ng-option-tmp let-item="item">
+              <span>{{ item.phone }} {{ item.fullName }}</span>
+            </ng-template>
+          </ng-select>
+        </div>
+      </div>
+    </div>
+  </nb-card-header>
+</nb-card>
+<nb-card *ngIf="customer !== null && customer.customerId > 0">
+  <nb-card-header>Tông tin cá nhân</nb-card-header>
+  <nb-card-body>
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="form-group row">
+          <label class="label col-sm-4 col-form-label">Họ tên</label>
+          <div class="col-sm-8">{{customer.fullName}}</div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="form-group row">
+          <label class="label col-sm-4 col-form-label">Email</label>
+          <div class="col-sm-8">{{customer.email}}</div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="form-group row">
+          <label class="label col-sm-4 col-form-label">Số điện thoại</label>
+          <div class="col-sm-8">{{showPhone(customer.phone)}}</div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="form-group row">
+          <label class="label col-sm-4 col-form-label">Ngày sinh</label>
+          <div class="col-sm-8">{{customer.dateOfBirth}}</div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="form-group row">
+          <label class="label col-sm-4 col-form-label">Số điểm hiện có</label>
+          <div class="col-sm-8">
+            {{point}} <button *ngIf="point > 0" (click)="showPoint()" class="float-right" nbButton>Chi tiết</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="form-group row">
+          <label class="label col-sm-4 col-form-label">Số điểm sắp dùng</label>
+          <div class="col-sm-8">{{pointFuture}}</div>
+        </div>
+      </div>
+    </div>
+  </nb-card-body>
+</nb-card>
+
+<nb-card>
+  <nb-card-header>Lich sử liên hệ</nb-card-header>
+  <nb-card-body>
+    <label class="label col-form-label">Danh sách ticket</label>
+    <table class="table table-hover table-bordered">
+      <thead>
+      <tr class="heart">
+        <th>Mã ticket</th>
+        <th>Loại ticket</th>
+        <th>Họ tên</th>
+        <th>Nội dung</th>
+        <th>Sản phẩm</th>
+        <th>Ngày tạo</th>
+        <th>Ngày cập nhật</th>
+        <th>Nhân viên phụ trách</th>
+        <th>Nhu cầu KH</th>
+        <th>Trạng thái KH</th>
+        <th>Trạng thái xử lý</th>
+      </tr>
+      </thead>
+      <tbody *ngIf="customer !== null && dataOpp.length > 0">
+      <tr *ngFor="let opp of dataOpp; let i = index">
+        <td>{{opp.id}}</td>
+        <td>{{showItemName(oppType, opp.type)}}</td>
+        <td>{{opp.fullName}}</td>
+        <td>{{opp.description}}</td>
+        <td>
+          <div *ngIf="opp.items.length > 0" class="mat-chip">
+            <div *ngFor="let po of opp.items">{{po.productName}} </div>
+          </div>
+        </td>
+        <td>{{opp.createdOn | date:"dd-MM-yyyy hh:mm"}}</td>
+        <td>{{opp.modifiedOn | date:"dd-MM-yyyy hh:mm"}}</td>
+        <td>{{opp.userName}}</td>
+        <td>{{showItemName(sourceDetails, opp.oppSource)}}</td>
+        <td>{{showItemName(contactStatus, opp.contactStatus)}}</td>
+        <td>{{showItemName(processStatus, opp.processStatus)}}</td>
+
+      </tr>
+      </tbody>
+    </table>
+  </nb-card-body>
+</nb-card>
+<nb-card style="padding-bottom: 5px;">
+  <nb-card-header>Lich sử mua hàng</nb-card-header>
+  <nb-card-body>
+    <label class="label col-form-label">Danh sách đơn hàng</label>
+    <table class="table table-hover table-bordered">
+      <thead>
+      <tr class="heart">
+        <th>Họ tên</th>
+        <th>Mã đơn hàng</th>
+        <th>Trạng thái</th>
+        <th>Thời gian</th>
+        <th>Số điện thoại</th>
+        <th>Địa chỉ</th>
+        <th>Tổng tiền</th>
+      </tr>
+      </thead>
+      <tbody *ngIf="customer !== null && dataOrder.length > 0">
+      <tr *ngFor="let order of dataOrder; let i = index">
+        <td>{{order.ShippingCustomerFullName}}</td>
+        <td>{{order.OrderCode}}</td>
+        <td>{{showOrderStatus(order.OrderStatus)}}</td>
+        <td>{{order.OrderCreateDatetime | date:"dd-MM-yyyy hh:mm"}}</td>
+        <td>{{showPhone(order.ShippingPhone1)}}</td>
+        <td>{{order.ShippingAddressLine1}}</td>
+        <td>{{order.OrderValue}}</td>
+      </tr>
+      </tbody>
+    </table>
+    <label class="label col-form-label">Danh sách sản phẩm</label>
+    <table class="table table-hover table-bordered">
+      <thead>
+      <tr class="heart">
+        <th>Tên sản phẩm</th>
+        <th>Số lượng</th>
+        <th>Thời gian</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let product of dataProduct; let i = index">
+        <td>{{product.ProductName}}</td>
+        <td>{{product.Quantity}}</td>
+        <td>{{product.OrderCreateDatetime | date:"dd-MM-yyyy hh:mm"}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </nb-card-body>
+</nb-card>
+<nb-accordion style="padding-bottom: 5px;">
+  <nb-accordion-item>
+    <nb-accordion-item-header>Địa chỉ nhận hàng</nb-accordion-item-header>
+    <nb-accordion-item-body>
+      <table class="table table-hover table-bordered">
+        <thead>
+        <tr class="heart">
+          <th>Họ tên tên</th>
+          <th>Số ĐT</th>
+          <th>Địa chỉ nhận hàng</th>
+        </tr>
+        </thead>
+        <tbody *ngIf="customer != null && customer.shippingAddress  != null">
+<!--        <tr *ngFor="let address of customer.shippingAddress; let i = index">-->
+<!--          <td><p>{{address.fullName}}</p></td>-->
+<!--          <td><p>{{showPhone(address.phone)}}</p></td>-->
+<!--          <td><p>{{address.address}} - {{address.subDistrictName}} - {{address.districtName}}-->
+<!--            -  {{address.provinceName}}</p></td>-->
+<!--        </tr>-->
+        </tbody>
+      </table>
+    </nb-accordion-item-body>
+  </nb-accordion-item>
+</nb-accordion>

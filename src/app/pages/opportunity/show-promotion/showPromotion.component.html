@@ -1,0 +1,214 @@
+<div class="body-show-promotion">
+  <div class="row">
+    <label class="label col-sm-4 col-form-label">Tên khuyến mại</label>
+    <div class="col-sm-8">
+      <p>{{promotionInfo.name}}</p>
+    </div>
+  </div>
+  <div class="row">
+    <label class="label col-sm-4 col-form-label">Nội dung</label>
+    <div class="col-sm-8">
+      <p>{{promotionInfo.description}}</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="form-group row">
+        <label class="label col-sm-4 col-form-label">Thời gian bắt đầu</label>
+        <div class="col-sm-8">
+          <p>{{promotionInfo.startDate | date:'dd/MM/yyyy' }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="form-group row">
+        <label class="label col-sm-4 col-form-label">Thời gian kết thúc</label>
+        <div class="col-sm-8">
+          <p>{{promotionInfo.endDate | date:'dd/MM/yyyy' }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="form-group row">
+        <label class="label col-sm-4 col-form-label">Loại phát hành</label>
+        <div class="col-sm-8">
+          <p>
+            <span *ngIf="promotionInfo.couponType == 1">Không phát hành mã </span>
+            <span *ngIf="promotionInfo.couponType == 2">Phát hành 1 mã </span>
+            <span *ngIf="promotionInfo.couponType == 3">Phất hành nhiều mã </span>
+            <span *ngIf="promotionInfo.couponType > 1">Tiền tố mã phát hành: {{promotionInfo.coupon_prefix}}</span>
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="form-group row">
+        <label class="label col-sm-4 col-form-label">Số lượng phát hành</label>
+        <div class="col-sm-8">
+          <p>{{promotionInfo.couponAmount}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <nb-card>
+    <nb-card-body>
+      <div class="form-group row">
+        <label class="label col-sm-2 col-form-label">Loại Khuyến mại</label>
+        <div class="col-sm-8">
+          <p>
+            <span *ngIf="promotionInfo.typeId == 1">Giảm phí vận chuyển</span>
+            <span *ngIf="promotionInfo.typeId == 2">Giảm giá</span>
+            <span *ngIf="promotionInfo.typeId == 3">Tặng kèm sản phẩm</span>
+          </p>
+        </div>
+      </div>
+      <div *ngIf="promotionInfo.promotionType == 1">
+        <div class="form-group row" *ngIf="promotionInfo.typeId == 1">
+          <table class="table table-hover table-bordered" *ngIf="conditionData.data.length > 0">
+            <thead>
+            <tr class="heart">
+              <th>Bắt đầu</th>
+              <th>Kết thúc</th>
+              <th>Giảm giá</th>
+              <th>Giảm tối đa</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let condition of conditionData.data">
+              <td>{{condition.start}}</td>
+              <td>{{condition.end}}</td>
+              <td>{{condition.discount}}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <div *ngIf="promotionInfo.typeId == 2">
+          <div class="form-group row">
+            <label class="label col-sm-2 col-form-label">Loại giảm</label>
+            <div class="col-sm-10">
+              <p *ngIf="conditionData.type == 1">Giảm theo số tiền</p>
+              <p *ngIf="conditionData.type == 2">Giảm theo %</p>
+            </div>
+          </div>
+          <div class="form-group row">
+            <table class="table table-hover table-bordered" *ngIf="conditionData.data.length > 0">
+              <thead>
+              <tr class="heart">
+                <th>Bắt đầu</th>
+                <th>Kết thúc</th>
+                <th>Giảm giá</th>
+                <th>Giảm tối đa</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let condition of conditionData.data">
+                <td>{{condition.start}}</td>
+                <td>{{condition.end}}</td>
+                <td>{{condition.discount}}</td>
+                <td>{{condition.max}}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div *ngIf="promotionInfo.typeId == 3">
+          <table class="table table-hover table-bordered" *ngIf="conditionData.products.length > 0">
+            <thead>
+            <tr class="heart">
+              <th>Bắt đầu</th>
+              <th>Kết thúc</th>
+              <th>Tên sản phẩm</th>
+              <th>Số lượng</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let condition of conditionData.products">
+              <td>{{condition.start}}</td>
+              <td>{{condition.end}}</td>
+              <td>{{condition.productName}}</td>
+              <td>{{condition.quantity}}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div *ngIf="promotionInfo.promotionType == 2">
+        <div *ngIf="promotionInfo.typeId == 2">
+          <div class="form-group row">
+            <table class="table table-hover table-bordered" *ngIf="conditionProducts.length > 0">
+              <thead>
+              <tr class="heart">
+                <th>Sản phẩm khuyến mại</th>
+                <th>Giá bán</th>
+                <th>Giảm giá</th>
+                <th>Giá bán</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let condition of conditionProducts">
+                <td>{{condition.productName}}</td>
+                <td>{{condition.price}}</td>
+                <td>{{condition.discount}}</td>
+                <td>{{condition.price - (condition.price * condition.discount / 100)}}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div *ngIf="promotionInfo.typeId == 3">
+          <table class="table table-hover table-bordered" *ngIf="conditionProducts.length > 0">
+            <thead>
+            <tr class="heart">
+              <th>Sản phẩm áp dụng</th>
+              <th>Số lượng</th>
+              <th>Sản phẩm tặng</th>
+              <th>Số lượng</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let condition of conditionProducts">
+              <td>{{condition.productName}}</td>
+              <td>{{condition.quantity}}</td>
+              <td>{{condition.productNameR}}</td>
+              <td>{{condition.quantityR}}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </nb-card-body>
+  </nb-card>
+  <nb-card *ngIf="promotionInfo.promotionType == 1">
+    <nb-card-header>Áp dụng khi mua sản phẩm</nb-card-header>
+    <nb-card-body>
+      <table class="table table-hover table-bordered" *ngIf="conditionProducts.length > 0">
+        <thead>
+        <tr class="heart">
+          <th>Tên sả phẩm</th>
+          <th>Số lượng</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let product of conditionProducts">
+          <td>{{product.productName}}</td>
+          <td>{{product.quantity}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </nb-card-body>
+  </nb-card>
+  <nb-card *ngIf="promotionInfo.promotionType == 1">
+    <nb-card-header>Vị trí áp dụng</nb-card-header>
+    <nb-card-body>
+      <div class="form-group row">
+        <div class="col-sm-8">
+          <nb-select [(ngModel)]="conditionLocations" [ngModelOptions]="{standalone: true}" placeholder="Chọn vị trí áp dụng" multiple>
+            <nb-option *ngFor="let location of locations" [value]="location.provinceCode">{{location.provinceName}}</nb-option>
+          </nb-select>
+        </div>
+      </div>
+    </nb-card-body>
+  </nb-card>
+</div>

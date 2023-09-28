@@ -1,0 +1,27 @@
+@import '../../../@theme/styles/themes';
+
+@include nb-install-component() {
+  .input-number {
+    max-width: 8rem !important;
+  }
+
+  .line-through {
+    text-decoration: line-through;
+  }
+
+  .price {
+    color: red;
+  }
+
+  .content-display {
+    max-height: 120px;
+    overflow-y: scroll;
+    white-space: pre-wrap;
+    justify-content: left !important;
+    align-items: normal;
+  }
+
+  .ng-star-inserted {
+    margin: 5px !important;
+  }
+}

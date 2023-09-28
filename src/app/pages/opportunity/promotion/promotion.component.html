@@ -1,0 +1,45 @@
+<div class="row" *ngIf="lstPromotionService.length > 1">
+  <div class="col-sm-4">
+    <label class="label col-form-label">Giảm phí vận chuyển</label>
+  </div>
+  <div class="col-sm-8">
+    <nb-radio-group name="promotionService-radio-group" [(ngModel)]="promotionServiceId">
+      <nb-radio *ngFor="let option of lstPromotionService" [value]="option.id">
+        {{option.name}}
+      </nb-radio>
+    </nb-radio-group>
+  </div>
+</div>
+<div class="row" *ngIf="lstPromotionDiscount.length > 1">
+  <div class="col-sm-4">
+    <label class="label col-form-label">Giảm giá đơn hàng</label>
+  </div>
+  <div class="col-sm-8">
+    <nb-radio-group name="promotionDiscount-radio-group" [(ngModel)]="promotionDiscountId">
+      <nb-radio *ngFor="let option of lstPromotionDiscount" [value]="option.id">
+        {{option.name}}
+      </nb-radio>
+    </nb-radio-group>
+  </div>
+</div>
+<div class="row" *ngIf="lstPromotionGive.length > 1">
+  <div class="col-sm-4">
+    <label class="label col-form-label">Tặng kèm sản phẩm</label>
+  </div>
+  <div class="col-sm-8">
+    <nb-radio-group name="promotionGive-radio-group" [(ngModel)]="promotionGiveId">
+      <nb-radio *ngFor="let option of lstPromotionGive" [value]="option.id">
+        {{option.name}}
+      </nb-radio>
+    </nb-radio-group>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-4"></div>
+  <div class="col-sm-8">
+    <div class="buttons-row">
+      <button type="button" (click)="submit()" nbButton status="info">Áp dụng</button>
+      <button type="button" (click)="cancel()" nbButton status="info">Hủy</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,84 @@
+<nb-card>
+  <nb-card-header>Tìm kiếm</nb-card-header>
+  <nb-card-body>
+    <form class="form" (ngSubmit)="onSubmit()">
+      <div class="row">
+        <div class="col-lg-4">
+          <div class="form-group row">
+            <label class="label col-sm-4 col-form-label">Số điện thoại</label>
+            <div class="col-sm-8">
+              <input [(ngModel)]="phone" fullWidth [ngModelOptions]="{standalone: true}" nbInput type="text"
+                name="phone" />
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="form-group row">
+            <label class="label col-sm-4 col-form-label">Địa chỉ Email</label>
+            <div class="col-sm-8">
+              <input [(ngModel)]="email" fullWidth [ngModelOptions]="{standalone: true}" nbInput type="text"
+                name="email" />
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="form-group row">
+            <label class="label col-sm-4 col-form-label">Facebook</label>
+            <div class="col-sm-8">
+              <input [(ngModel)]="facebook" fullWidth [ngModelOptions]="{standalone: true}" nbInput type="text"
+                name="facebook" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-4">
+          <div class="form-group row">
+            <label class="label col-sm-4 col-form-label">Họ tên</label>
+            <div class="col-sm-8">
+              <input [(ngModel)]="fullName" fullWidth [ngModelOptions]="{standalone: true}" nbInput type="text"
+                name="fullName" />
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="form-group row">
+            <label class="label col-sm-4 col-form-label">Nguồn tạo</label>
+            <div class="col-sm-8">
+              <nb-select [(ngModel)]="source" fullWidth [ngModelOptions]="{standalone: true}"
+                placeholder="Chọn thời gian" (ngModelChange)="onSubmit()">
+                <nb-option *ngFor="let val of oppSource" [value]="val.id">{{val.name}}</nb-option>
+              </nb-select>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="form-group row">
+            <div class="col-sm-4">
+
+            </div>
+            <div class="col-sm-8">
+              <div class="buttons-row float-right">
+                <button type="submit" nbButton status="info">Tìm kiếm</button>
+                <button type="button" nbButton status="info" (click)="resetSearch()">Bỏ tìm kiếm</button>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+    </form>
+  </nb-card-body>
+</nb-card>
+<nb-card>
+  <nb-card-header>Danh sách cơ hội
+    <button type="button" nbButton style="float: right" (click)="importOpp()">
+      <nb-icon icon="cloud-upload-outline"></nb-icon>Tải lên khách hảng
+    </button>
+  </nb-card-header>
+  <nb-card-body>
+    <ng2-smart-table [settings]="settings" [source]="sourceData" (custom)="actionOpp($event)"></ng2-smart-table>
+  </nb-card-body>
+</nb-card>
