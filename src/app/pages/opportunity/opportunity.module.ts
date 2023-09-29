@@ -66,7 +66,6 @@ import {HTTP_INTERCEPTORS} from '@angular/common/http';
     ShowPromotionComponent,
     InsertOppComponent,
     OpportunitySearchComponent,
-    NewOpportunitySearchComponent,
   ],
   entryComponents: [
     ShowPromotionComponent,
