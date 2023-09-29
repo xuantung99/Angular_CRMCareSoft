@@ -8,12 +8,12 @@ import {AppConstants} from '../../../../@core/utils/app.constants';
 import {OrderService} from '../../../../@core/services/order.service';
 
 @Component({
-  selector: 'ngx-phone-search',
-  templateUrl: './phone-search.component.html',
-  styleUrls: ['./phone-search.component.scss'],
+  selector: 'ngx-phone-opportunity',
+  templateUrl: './phone-opportunity.component.html',
+  styleUrls: ['./phone-opportunity.component.scss'],
 })
 
-export class PhoneSearchComponent implements OnInit {
+export class PhoneOpportunityComponent implements OnInit {
   phoneNumber: string = '';
   customer: any = null;
   point: number = 0;

@@ -4,7 +4,6 @@ import {OpportunityEditComponent} from './edit/opportunityEdit.component';
 import {OpportunityComponent} from './opportunity.component';
 import {ShowPromotionComponent} from './show-promotion/showPromotion.component';
 import {InsertOppComponent} from './import/insertOpp.component';
-import {OpportunitySearchComponent} from './search/opportunitySearch.component';
 import {FormsModule} from '@angular/forms';
 import {NgSelectModule} from '@ng-select/ng-select';
 import {
@@ -31,7 +30,7 @@ import {NbDateFnsDateModule} from '@nebular/date-fns';
 import {Ng2SmartTableModule} from 'ng2-smart-table';
 import {InterceptService} from '../../@core/services/intercept.service';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
-import { PhoneSearchComponent } from './search/phone-search/phone-search.component';
+import { PhoneOpportunityComponent } from './search/phone-opportunity/phone-opportunity.component';
 
 @NgModule({
   imports: [
@@ -66,8 +65,7 @@ import { PhoneSearchComponent } from './search/phone-search/phone-search.compone
     OpportunityEditComponent,
     ShowPromotionComponent,
     InsertOppComponent,
-    OpportunitySearchComponent,
-    PhoneSearchComponent,
+    PhoneOpportunityComponent,
   ],
   entryComponents: [
     ShowPromotionComponent,
