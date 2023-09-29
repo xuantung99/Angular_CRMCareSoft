@@ -1,33 +1,3 @@
-<nb-card>
-  <nb-card-header>
-    <div class="col-12">
-      <div class="row">
-        <div class="col-sm-4">Tìm kiếm thông tin khách hàng</div>
-        <div class="col-sm-4">
-          <ng-select style="min-width: 300px"
-                     [items]="dataCustomer"
-                     bindLabel="phone"
-                     [minTermLength]="3"
-                     [addTag]="addTagFn"
-                     (ngModelChange)="selectCustomer($event)"
-                     [loading]="peopleLoading"
-                     placeholder="Tìm kiếm số điện thoại | email"
-                     typeToSearchText="Nhập vào ít nhất 3 kí tự để tìm kiếm"
-                     [typeahead]="peopleInput$"
-                     [(ngModel)]="customer">
-            <ng-template ng-label-tmp let-item="item">
-              <span>{{ item.phone }} {{ item.fullName }}</span>
-            </ng-template>
-            <ng-template ng-option-tmp let-item="item">
-              <span>{{ item.phone }} {{ item.fullName }}</span>
-            </ng-template>
-          </ng-select>
-        </div>
-      </div>
-    </div>
-  </nb-card-header>
-</nb-card>
-
 <nb-card *ngIf="customer !== null && customer.customerId > 0">
   <nb-card-header>Thông tin cá nhân</nb-card-header>
   <nb-card-body>
@@ -64,7 +34,8 @@
         <div class="form-group row">
           <label class="label col-sm-4 col-form-label">Số điểm hiện có</label>
           <div class="col-sm-8">
-            {{point}} <button *ngIf="point > 0" (click)="showPoint()" class="float-right" nbButton>Chi tiết</button>
+            {{point}}
+            <button *ngIf="point > 0" (click)="showPoint()" class="float-right" nbButton>Chi tiết</button>
           </div>
         </div>
       </div>

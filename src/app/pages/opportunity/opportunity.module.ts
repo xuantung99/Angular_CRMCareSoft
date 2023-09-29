@@ -31,6 +31,7 @@ import {NbDateFnsDateModule} from '@nebular/date-fns';
 import {Ng2SmartTableModule} from 'ng2-smart-table';
 import {InterceptService} from '../../@core/services/intercept.service';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
+import { PhoneSearchComponent } from './search/phone-search/phone-search.component';
 
 @NgModule({
   imports: [
@@ -66,6 +67,7 @@ import {HTTP_INTERCEPTORS} from '@angular/common/http';
     ShowPromotionComponent,
     InsertOppComponent,
     OpportunitySearchComponent,
+    PhoneSearchComponent,
   ],
   entryComponents: [
     ShowPromotionComponent,

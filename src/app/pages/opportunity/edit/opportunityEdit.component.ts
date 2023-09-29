@@ -887,7 +887,7 @@ export class OpportunityEditComponent implements OnInit, OnDestroy {
     // nếu là true thì gọi function check khuyến mãi cho combo
     if (this.applyWithCombo) {
       // Chỉ đẩy sản phẩm chính lên check
-      this.getPromotionByProduct(dataPro[0].itemId, parseInt(dataPro[0].quantity));
+      this.getPromotionByProduct(dataPro[0].itemId, parseInt(dataPro[0].quantity, 10));
     }
 
     // kiểm tra combo có phải là cấu hình cho chương trình khuyến mãi không
@@ -988,7 +988,7 @@ export class OpportunityEditComponent implements OnInit, OnDestroy {
     promotionModel.push(
       {
         productId: productId,
-        quantity: quantity !== null ? parseInt(quantity) : 1,
+        quantity: quantity !== null ? parseInt(quantity, 10) : 1,
       },
     );
     this.promotionService.getByMultipleProductsV2(promotionModel).subscribe((data: any) => {
@@ -1031,7 +1031,6 @@ export class OpportunityEditComponent implements OnInit, OnDestroy {
       }
       this.totalAmount = total;
     });
-
   }
 
   showPromotion() {
@@ -1126,7 +1125,7 @@ export class OpportunityEditComponent implements OnInit, OnDestroy {
           dataL.push(proPromotionItem);
           // item không được áp dụng
           const proNotApply = {...pro};
-          proNotApply.quantity = parseInt(proNotApply.quantity) - conditionQuantity;
+          proNotApply.quantity = parseInt(proNotApply.quantity, 10) - conditionQuantity;
           if (proNotApply.quantity > 0)
             dataL.push(proNotApply);
         } else if (pro.check === 1) {
@@ -1508,10 +1507,10 @@ export class OpportunityEditComponent implements OnInit, OnDestroy {
             ServiceId: productPromotion[0].itemId,
             DiscountName: item.promotionOriginName,
             Discount: productPromotion[0].originalPrice,
-            DiscountAmount: productPromotion[0].originalPrice * parseInt(productPromotion[0].quantity),
+            DiscountAmount: productPromotion[0].originalPrice * parseInt(productPromotion[0].quantity, 10),
             SKU: productPromotion[0].itemSku,
             ProductName: productPromotion[0].itemName,
-            Quantity: parseInt(productPromotion[0].quantity),
+            Quantity: parseInt(productPromotion[0].quantity, 10),
             DiscountCode: '0606',
             Notes: 'sản phẩm tách từ combo',
             ComboId: item.promotionId, // id combo
@@ -1736,7 +1735,7 @@ export class OpportunityEditComponent implements OnInit, OnDestroy {
     this.dataCombo[index].promotionItems = [];
     this.dataCombo[index].promotionItemsInit.forEach(element => {
       const a = {...element};
-      a.quantity = parseInt(element.quantity) * this.dataCombo[index].quantity;
+      a.quantity = parseInt(element.quantity, 10) * this.dataCombo[index].quantity;
       this.dataCombo[index].promotionItems.push(a);
       this.changeQuantity(a.quantity, index, true);
     });

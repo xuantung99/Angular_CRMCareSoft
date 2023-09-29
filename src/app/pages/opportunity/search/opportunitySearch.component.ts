@@ -105,14 +105,16 @@ export class OpportunitySearchComponent implements OnInit, OnDestroy {
       switchMap(term => this.customerService.searchUsers(term)),
     ).subscribe(items => {
       this.dataCustomer = items;
+      console.log(items);
       this.peopleLoading = false;
-    }, (err) => {
+    }, () => {
       this.dataCustomer = [];
       this.peopleLoading = false;
     });
   }
 
   addTagFn(name) {
+    // console.log(name);
     return {customerId: 0, phone: name, fullName: ''};
   }
 
@@ -127,9 +129,7 @@ export class OpportunitySearchComponent implements OnInit, OnDestroy {
               id: sm.shippingAddressId,
               name: sm.address + ' - ' + sm.subDistrictName + ' - ' + sm.districtName + ' - ' + sm.provinceName,
             });
-          }
-        }
-      }
+          }}}
       this.orderService.getOrderInfosByCustomer(this.customer.customerId).subscribe(
         (data) => {
           this.dataOrder = data;
@@ -139,10 +139,8 @@ export class OpportunitySearchComponent implements OnInit, OnDestroy {
           this.dataProduct = data;
         },
       );
-
       this.checkPoint('', this.customer.customerId);
     }
-
     this.getListOpp(this.customer.phone);
   }
 
@@ -160,9 +158,9 @@ export class OpportunitySearchComponent implements OnInit, OnDestroy {
     }
   }
 
-  editTicket(ticketDetail) {
-    this.router.navigate(['/opportunity/edit/' + ticketDetail.id]);
-  }
+  // editTicket(ticketDetail) {
+  //   this.router.navigate(['/opportunity/edit/' + ticketDetail.id]);
+  // }
 
   showOrderStatus(status) {
     const item = this.listOrderStatus.find(x => x.id === status);
@@ -178,15 +176,17 @@ export class OpportunitySearchComponent implements OnInit, OnDestroy {
   }
 
   checkPoint(phone: string = '', customerId: number = 0) {
-    // if ((phone !== null && phone !== undefined && phone.length >= 10) || (customerId !== null && customerId > 0)) {
-    //   this.customerService.checkPointByPhone(phone, customerId).then((data: any) => {
-    //     this.point = data.point;
-    //     this.pointFuture = data.pointFuture;
-    //   }).catch(ex => {
-    //     this.point = 0;
-    //   });
-    // }
+    if ((phone !== null && phone !== undefined && phone.length >= 10) || (customerId !== null && customerId > 0)) {
+      this.customerService.checkPointByPhone(phone, customerId).then((data: any) => {
+        this.point = data.point;
+        this.pointFuture = data.pointFuture;
+      }).catch(ex => {
+        this.point = 0;
+      });
+    }
   }
 
   showPoint() {}
+
+  protected readonly console = console;
 }
