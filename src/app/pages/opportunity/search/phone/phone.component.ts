@@ -1,19 +1,19 @@
-// Phone number: 0999012347
-
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, TemplateRef} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {CustomerService} from '../../../../@core/services/customer.service';
 import {OpportunityService} from '../../../../@core/services/opportunity.service';
 import {AppConstants} from '../../../../@core/utils/app.constants';
 import {OrderService} from '../../../../@core/services/order.service';
+import {nbAuthCreateToken} from '@nebular/auth';
+import {NgIfContext} from '@angular/common';
 
 @Component({
-  selector: 'ngx-phone-opportunity',
-  templateUrl: './phone-opportunity.component.html',
-  styleUrls: ['./phone-opportunity.component.scss'],
+  selector: 'ngx-phone',
+  templateUrl: './phone.component.html',
+  styleUrls: ['./phone.component.scss'],
 })
 
-export class PhoneOpportunityComponent implements OnInit {
+export class PhoneComponent implements OnInit {
   phoneNumber: string = '';
   customer: any = null;
   point: number = 0;
@@ -26,6 +26,7 @@ export class PhoneOpportunityComponent implements OnInit {
   listOrderStatus: any = AppConstants.orderStatus;
   dataOrder: Array<any> = [];
   dataProduct: Array<any>  = [];
+  errorLog: string = '';
 
   constructor(
     public route: ActivatedRoute,
@@ -43,7 +44,7 @@ export class PhoneOpportunityComponent implements OnInit {
       this.customerService.checkPointByPhone(phone, customerId).then((data: any) => {
         this.point = data.point;
         this.pointFuture = data.pointFuture;
-      }).catch(ex => {
+      }).catch(() => {
         this.point = 0;
       });
     }
@@ -76,11 +77,31 @@ export class PhoneOpportunityComponent implements OnInit {
     }
   }
 
+  validatePhoneNumber(phoneNumber) {
+    const regex: RegExp = /((09|03|07|08|05)+([0-9]{8})\b)/g;
+    if (phoneNumber !== '') {
+      if (regex.test(phoneNumber) === false) {
+        this.errorLog = 'Số điện thoại không đúng định dạng!';
+        console.log(this.errorLog);
+        return false;
+      } else return true;
+    } else {
+      this.errorLog =  'Bạn chưa điền số điện thoại!';
+      console.log(this.errorLog);
+      return false;
+    }
+  }
+
   ngOnInit(): void {
     this.phoneNumber = this.route.snapshot.paramMap.get('phone');
-    if (typeof this.phoneNumber === 'string')
+    // Validate phone number
+    if (this.validatePhoneNumber(this.phoneNumber) === true)
     this.customerService.searchUsers(this.phoneNumber).subscribe(data => {
-      if (data.length !== 0) {
+      // Check if phone number exist
+      if (data === null) {
+        this.errorLog = 'Số điện thoại không tồn tại';
+        console.log(this.errorLog);
+      } else {
         this.customer = data[0];
         this.checkPoint('', this.customer.customerId);
         this.getListOpp(this.customer.phone);
@@ -91,8 +112,11 @@ export class PhoneOpportunityComponent implements OnInit {
         this.orderService.getOrderItemsByCustomer(this.customer.customerId, 0, 50).subscribe((dataProductData) => {
           this.dataProduct = dataProductData;
         });
-      }
-      },
-    );
+      }});
   }
+
+  protected readonly Text = Text;
+  protected readonly nbAuthCreateToken = nbAuthCreateToken;
+  protected readonly TemplateRef = TemplateRef;
+  protected readonly NgIfContext = NgIfContext;
 }

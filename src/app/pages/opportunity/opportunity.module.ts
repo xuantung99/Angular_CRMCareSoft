@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {ThemeModule} from '../../@theme/theme.module';
-import {OpportunityEditComponent} from './edit/opportunityEdit.component';
+import {EditComponent} from './edit/edit.component';
 import {OpportunityComponent} from './opportunity.component';
 import {ShowPromotionComponent} from './show-promotion/showPromotion.component';
 import {InsertOppComponent} from './import/insertOpp.component';
@@ -30,7 +30,7 @@ import {NbDateFnsDateModule} from '@nebular/date-fns';
 import {Ng2SmartTableModule} from 'ng2-smart-table';
 import {InterceptService} from '../../@core/services/intercept.service';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
-import { PhoneOpportunityComponent } from './search/phone-opportunity/phone-opportunity.component';
+import { PhoneComponent } from './search/phone/phone.component';
 
 @NgModule({
   imports: [
@@ -62,10 +62,10 @@ import { PhoneOpportunityComponent } from './search/phone-opportunity/phone-oppo
   ],
   declarations: [
     OpportunityComponent,
-    OpportunityEditComponent,
+    EditComponent,
     ShowPromotionComponent,
     InsertOppComponent,
-    PhoneOpportunityComponent,
+    PhoneComponent,
   ],
   entryComponents: [
     ShowPromotionComponent,
@@ -81,7 +81,7 @@ import { PhoneOpportunityComponent } from './search/phone-opportunity/phone-oppo
     },
   ],
   exports: [
-    OpportunityEditComponent,
+    EditComponent,
   ],
 })
 

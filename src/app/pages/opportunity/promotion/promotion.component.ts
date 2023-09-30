@@ -10,7 +10,7 @@ interface CardSettings {
 
 @Component({
   selector: 'ngx-promotion',
-  styleUrls: ['../edit/opportunityEdit.component.scss'],
+  styleUrls: ['../edit/edit.component.scss'],
   templateUrl: './promotion.component.html',
 })
 
@@ -60,7 +60,7 @@ export class PromotionComponent implements OnDestroy {
         name : "Không"
       }];
       for (const pro of pr.data) {
-        if(pro.typeId == 1) 
+        if(pro.typeId == 1)
           this.lstPromotionService.push(pro)
         else if(pro.typeId == 2)
           this.lstPromotionDiscount.push(pro)

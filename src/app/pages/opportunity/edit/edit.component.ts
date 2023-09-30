@@ -32,11 +32,11 @@ interface CardSettings {
 
 @Component({
   selector: 'ngx-opportunity-edit',
-  styleUrls: ['./opportunityEdit.component.scss'],
-  templateUrl: './opportunityEdit.component.html',
+  styleUrls: ['./edit.component.scss'],
+  templateUrl: './edit.component.html',
 })
 
-export class OpportunityEditComponent implements OnInit, OnDestroy {
+export class EditComponent implements OnInit, OnDestroy {
   // Other
   wRef: NbWindowRef;
   peopleInput$ = new EventEmitter<string>();
