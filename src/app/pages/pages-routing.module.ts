@@ -1,7 +1,7 @@
 import {RouterModule, Routes} from '@angular/router';
 import {NgModule} from '@angular/core';
 import {PagesComponent} from './pages.component';
-import {EditComponent} from './opportunity/edit/edit.component';
+import {FormOrderComponent} from './opportunity/edit/form-order.component';
 import {PhoneComponent} from './opportunity/search/phone/phone.component';
 
 const routes: Routes = [{
@@ -9,7 +9,7 @@ const routes: Routes = [{
   component: PagesComponent,
   children: [
     {path: 'opportunity/history/:phone', component: PhoneComponent},
-    {path: 'opportunity/edit/:id', component: EditComponent},
+    {path: 'opportunity/edit/:id', component: FormOrderComponent},
   ],
 }];
 

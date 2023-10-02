@@ -1,9 +1,10 @@
 import {NgModule} from '@angular/core';
 import {ThemeModule} from '../../@theme/theme.module';
-import {EditComponent} from './edit/edit.component';
+import {PhoneComponent} from './search/phone/phone.component';
 import {OpportunityComponent} from './opportunity.component';
 import {ShowPromotionComponent} from './show-promotion/showPromotion.component';
 import {InsertOppComponent} from './import/insertOpp.component';
+import {FormOrderComponent} from './edit/form-order.component';
 import {FormsModule} from '@angular/forms';
 import {NgSelectModule} from '@ng-select/ng-select';
 import {
@@ -26,11 +27,11 @@ import {
   NbUserModule,
   NbWindowModule,
 } from '@nebular/theme';
+
 import {NbDateFnsDateModule} from '@nebular/date-fns';
 import {Ng2SmartTableModule} from 'ng2-smart-table';
 import {InterceptService} from '../../@core/services/intercept.service';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
-import { PhoneComponent } from './search/phone/phone.component';
 
 @NgModule({
   imports: [
@@ -62,7 +63,7 @@ import { PhoneComponent } from './search/phone/phone.component';
   ],
   declarations: [
     OpportunityComponent,
-    EditComponent,
+FormOrderComponent,
     ShowPromotionComponent,
     InsertOppComponent,
     PhoneComponent,
@@ -79,9 +80,6 @@ import { PhoneComponent } from './search/phone/phone.component';
       useClass: InterceptService,
       multi: true,
     },
-  ],
-  exports: [
-    EditComponent,
   ],
 })
 

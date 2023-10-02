@@ -1,4 +1,4 @@
-import {ProductService} from './../../../@core/services/product.service';
+import {ProductService} from '../../../@core/services/product.service';
 import {Component, EventEmitter, Inject, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {NbTabComponent, NbTabsetComponent, NbThemeService, NbWindowRef, NbWindowService} from '@nebular/theme';
@@ -32,11 +32,11 @@ interface CardSettings {
 
 @Component({
   selector: 'ngx-opportunity-edit',
-  styleUrls: ['./edit.component.scss'],
-  templateUrl: './edit.component.html',
+  styleUrls: ['./form-order.component.scss'],
+  templateUrl: './form-order.component.html',
 })
 
-export class EditComponent implements OnInit, OnDestroy {
+export class FormOrderComponent implements OnInit, OnDestroy {
   // Other
   wRef: NbWindowRef;
   peopleInput$ = new EventEmitter<string>();
@@ -52,7 +52,7 @@ export class EditComponent implements OnInit, OnDestroy {
   shipDistrictCode: string;
   shipSubDistrictCode: string;
   shipWeight: number = 0;
-  shipingFeeAmount: number = 0;
+  shippingFeeAmount: number = 0;
   point = 0;
   totalPoint = 0;
   coefficientPoint = 10000;
@@ -96,7 +96,6 @@ export class EditComponent implements OnInit, OnDestroy {
   HasPromotion = 0;
   // array, list
   commonStatusCardsSet: CardSettings[] = [];
-  nextStatus: { code: number, name: string }[] = [];
   listOpps: OpportunityModel[] = [];
   listPromotions = [];
   itemsPoint = [{id: 0, name: 'không sử dụng điểm'}];
@@ -107,7 +106,6 @@ export class EditComponent implements OnInit, OnDestroy {
   dataPC = [];
   dataCombo = [];
   dataProduct = [];
-  productFree = [];
   promotions: any = [];
   discountProduct: any = [];
   resultCalls = AppConstants.resultCalls;
@@ -120,13 +118,9 @@ export class EditComponent implements OnInit, OnDestroy {
   dataLogOpp: OpportunityLogModel[] = [];
   oppSource: OpportunitySourceModel[] = [];
   listOrderStatus: any = AppConstants.orderStatus;
-  contactStatus: any = AppConstants.contactStatus;
-  sourceDetails: any = AppConstants.oppSource;
   listProcessStatus: any = AppConstants.processStatus;
-  subProcessStatus: any = AppConstants.subProcessStatus;
   listSource: any = AppConstants.createdSourceOrder;
   oppStatus = [];
-  oppType: any = AppConstants.typeOpportunity;
   shippingTypes: any = [
     {value: 1, name: 'Tính phí vận chuyển'},
     {value: 0, name: 'Nhận hàng tại kho không tính phí'},
@@ -169,9 +163,9 @@ export class EditComponent implements OnInit, OnDestroy {
   shipmentList: any;
   customer: any = null;
   dataCustomer: any;
-  keywordSearch: any = null;
   dataKeywords: any;
   orderInfo: any;
+  IdChecked: boolean = false;
 
 
   constructor(private themeService: NbThemeService,
@@ -242,6 +236,7 @@ export class EditComponent implements OnInit, OnDestroy {
       this.popup = true;
     } else {
       this.routeA.params.subscribe(params => {
+        // console.log(params);
         this.opp.id = params['id'] === undefined ? 0 : Number(params['id']);
         if (this.opp.id > 0) {
           this.getOppDetail(this.opp.id);
@@ -278,15 +273,18 @@ export class EditComponent implements OnInit, OnDestroy {
     ).subscribe(items => {
       this.dataKeywords = items;
       this.keywordLoading = false;
-    }, (err) => {
+    }, () => {
       this.dataKeywords = [];
       this.keywordLoading = false;
     });
   }
 
-  getOppDetail(oppId) {
+  getOppDetail(oppId): void {
+    // console.log(oppId);
     this.opportunityService.getOpportuntyCareSoftById(oppId).subscribe(
       data => {
+        // console.log(data);
+        this.IdChecked = true;
         this.opp = data;
         this.opp.source = Number(this.opp.source);
         this.opp.status = Number(this.opp.status);
@@ -374,7 +372,6 @@ export class EditComponent implements OnInit, OnDestroy {
       this.customerEmail = this.opp.email;
       this.createLocation();
     });
-
   }
 
   getListOpp(phone) {
@@ -776,14 +773,14 @@ export class EditComponent implements OnInit, OnDestroy {
     }
   }
 
-  selectedKeyword(item) {
-    this.keywords = item;
-    this.searchDataContent();
-  }
-
-  addTagFn(name) {
-    return {id: 0, keyword: name, tag: true};
-  }
+  // selectedKeyword(item) {
+  //   this.keywords = item;
+  //   this.searchDataContent();
+  // }
+  //
+  // addTagFn(name) {
+  //   return {id: 0, keyword: name, tag: true};
+  // }
 
   createLocation() {
     const ship: any = {};
@@ -840,6 +837,7 @@ export class EditComponent implements OnInit, OnDestroy {
 
   selectProduct(item, isOrder = true) {
     this.product = item;
+    // console.log(this.product);
     if (isOrder === false) {
       this.addProductToOrder();
     }
@@ -912,13 +910,11 @@ export class EditComponent implements OnInit, OnDestroy {
       for (const product of this.products) {
         total += product.quantity * product.salePrice;
       }
-
       for (const dcb of this.dataCombo) {
         for (const product of dcb.promotionItems) {
           total += product.quantity * product.salePrice;
         }
       }
-
       total += this.product.ProductSkus[0].SalePrice;
       this.products.push({
         itemId: this.product.Id,
@@ -944,13 +940,11 @@ export class EditComponent implements OnInit, OnDestroy {
     for (const product of this.products) {
       total += product.quantity * product.salePrice;
     }
-
     for (const dcb of this.dataCombo) {
       for (const product of dcb.promotionItems) {
         total += product.quantity * product.salePrice;
       }
     }
-
     this.totalAmount = total;
     // vì combo có thể coi là một sản phẩm nên nếu khồng cài đặt khuyến mãi cho combo , check cũng không có
     if (!isCombo)
@@ -964,18 +958,15 @@ export class EditComponent implements OnInit, OnDestroy {
     } else {
       this.dataCombo.splice(index, 1);
     }
-
     let total = 0;
     for (const product of this.products) {
       total += product.quantity * product.salePrice;
     }
-
     for (const dcb of this.dataCombo) {
       for (const product of dcb.promotionItems) {
         total += product.quantity * product.salePrice;
       }
     }
-
     this.totalAmount = total;
     this.getDayofUse();
   }
@@ -992,8 +983,10 @@ export class EditComponent implements OnInit, OnDestroy {
       },
     );
     this.promotionService.getByMultipleProductsV2(promotionModel).subscribe((data: any) => {
+      console.log(data);
       if (data.length > 0) {
-        this.products[index - 1].promotion = data[0];
+        this.products[index - 1].promotion = data;
+        // console.log(data);
         for (const pro of data) {
           if (pro.productId === productId) {
             for (const pr of this.products) {
@@ -1002,6 +995,7 @@ export class EditComponent implements OnInit, OnDestroy {
                   pr.salePrice = pr.originalPrice - pro.rewardDiscount;
                   pr.check = 1;
                   pr.promotion = pro;
+                  console.log(pr);
                 } else {
                   const pDetail = this.dataP.find(x => x.Id === pro.rewardProductId);
                   if (pDetail) {
@@ -1011,6 +1005,7 @@ export class EditComponent implements OnInit, OnDestroy {
                     pr.promotion.salePrice = pDetail.ProductSkus[0].SalePrice;
                     pr.promotion.weight = pDetail.ProductSkus[0].WeightGram;
                     pr.promotion.sku = pDetail.ProductSkus[0].Sku;
+                    console.log(pr);
                   }
                 }
               }
@@ -1224,7 +1219,6 @@ export class EditComponent implements OnInit, OnDestroy {
         }
       }
 
-
       this.showPromotion();
     });
   }
@@ -1306,7 +1300,7 @@ export class EditComponent implements OnInit, OnDestroy {
       dataOrder.OrderValue = this.totalAmount + this.shipment.fee - this.totaDiscount - dataOrder.DeductionLoyalty;
       dataOrder.lineItems = this.createLineItem();
       dataOrder.lineServices = service;
-      dataOrder.LineDiscounts = this.createitemDiscount(this.shipment);
+      dataOrder.LineDiscounts = this.createItemDiscount(this.shipment);
       dataOrder.createdBy = this.user.email;
       dataOrder.dayOfUse = this.useOfDay;
       dataOrder.createdSource = this.createdSource;
@@ -1397,7 +1391,7 @@ export class EditComponent implements OnInit, OnDestroy {
   }
 
   // HuyPX : truyền thêm rule xuống để check item nào được áp dụng
-  createitemDiscount(shipment) {
+  createItemDiscount(shipment) {
     const dataL: any = [];
     if (this.products.length > 0) {
       for (const pro of this.products) {
@@ -1591,7 +1585,6 @@ export class EditComponent implements OnInit, OnDestroy {
       this.formError.shipWeight = true;
       check = false;
     }
-
     if (check) {
       const dataR: any = {};
       dataR.inventoryCode = this.inventoryId;
@@ -1600,7 +1593,7 @@ export class EditComponent implements OnInit, OnDestroy {
       dataR.toSubDistrictCode = this.shipSubDistrictCode;
       dataR.itemBatchWeight = this.shipWeight;
       this.otherService.calcShipingFee(dataR).then((dat: any = {}) => {
-        this.shipingFeeAmount = dat.fee;
+        this.shippingFeeAmount = dat.fee;
       }).catch(ex => {
         this.noti.error(ex);
       });
@@ -1647,7 +1640,6 @@ export class EditComponent implements OnInit, OnDestroy {
       } else {
         dataPrm.coupon = '';
       }
-
       if (this.customer !== null) {
         dataPrm.customerId = this.customer.customerId;
       } else {
@@ -1694,7 +1686,6 @@ export class EditComponent implements OnInit, OnDestroy {
       }
     }
   }
-
 
   showOrderStatus(status) {
     const item = this.listOrderStatus.find(x => x.id === status);
@@ -1744,4 +1735,6 @@ export class EditComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.alive = false;
   }
+
+  protected readonly console = console;
 }

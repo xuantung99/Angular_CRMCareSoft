@@ -10,7 +10,7 @@ interface CardSettings {
 
 @Component({
   selector: 'ngx-promotion',
-  styleUrls: ['../edit/edit.component.scss'],
+  styleUrls: ['../edit/form-order.component.scss'],
   templateUrl: './promotion.component.html',
 })
 

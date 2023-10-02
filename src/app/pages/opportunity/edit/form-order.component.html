@@ -1,4 +1,7 @@
-<nb-tabset fullWidth #tabDetail [nbSpinner]="loading" nbSpinnerSize="giant" nbSpinnerStatus="primary">
+<nb-card *ngIf="!IdChecked" class="text-center">
+  <nb-card-header class="py-4">Id không hợp lệ</nb-card-header>
+</nb-card>
+<nb-tabset *ngIf="IdChecked" fullWidth #tabDetail [nbSpinner]="loading" nbSpinnerSize="giant" nbSpinnerStatus="primary">
   <nb-tab tabTitle="Thông tin đơn hàng" #tabOrder>
     <nb-card>
       <nb-card-header>Thông tin người dùng</nb-card-header>
@@ -64,8 +67,7 @@
             <div class="form-group row">
               <label class="label col-sm-4 col-form-label">Số điện thoại *</label>
               <div class="col-sm-8">
-                <input [(ngModel)]="shipminetPhone" [ngModelOptions]="{standalone: true}" nbInput type="text"
-                       fullWidth/>
+                <input [(ngModel)]="shipminetPhone" [ngModelOptions]="{standalone: true}" nbInput type="text" fullWidth/>
                 <div class="form-error" *ngIf="formError.shipminetPhone == true">Bạn hãy số điện thoại người nhận hàng
                 </div>
               </div>
@@ -81,14 +83,12 @@
             <div class="form-error" *ngIf="formError.provinceCode == true">Bạn hãy chọn tỉnh / thành phố</div>
           </div>
           <div class="col-sm-3">
-            <ng-select [items]="districts" [(ngModel)]="districtCode" (change)="changeDistrict($event)"
-                       bindValue="districtId" bindLabel="districtName" placeholder="Chọn Quận / Huyện">
+            <ng-select [items]="districts" [(ngModel)]="districtCode" (change)="changeDistrict($event)" bindValue="districtId" bindLabel="districtName" placeholder="Chọn Quận / Huyện">
             </ng-select>
             <div class="form-error" *ngIf="formError.districtCode == true">Bạn hãy chọn quận / huyện</div>
           </div>
           <div class="col-sm-4">
-            <ng-select [items]="subDistricts" [(ngModel)]="subDistrictCode" (change)="changeSubDistrict($event)"
-                       bindValue="wardId" bindLabel="wardName" placeholder="Chọn phường / xã">
+            <ng-select [items]="subDistricts" [(ngModel)]="subDistrictCode" (change)="changeSubDistrict($event)" bindValue="wardId" bindLabel="wardName" placeholder="Chọn phường / xã">
             </ng-select>
             <div class="form-error" *ngIf="formError.subDistrictCode == true">Bạn hãy chọn xã / phường</div>
           </div>
@@ -117,12 +117,12 @@
           <div class="row">
             <div class="col-sm-2">Tìm kiếm sản phẩm</div>
             <div class="col-sm-6">
-              <ng-select [items]="dataPC" [(ngModel)]="productId" (change)="selectProduct($event)" bindValue="Id"
-                         bindLabel="Name" placeholder="Chọn sản phẩm">
+              <ng-select [items]="dataPC" [(ngModel)]="productId" (change)="selectProduct($event)" bindValue="Id" bindLabel="Name" placeholder="Chọn sản phẩm">
               </ng-select>
             </div>
             <div class="buttons-row col-sm-4">
-              <button (click)="addProductToOrder()" type="button" nbButton status="info">Thêm SP</button>
+              <button (click)="addProductToOrder()" type="button" nbButton status="info">Thêm
+              SP</button>
             </div>
           </div>
           <div class="form-error" *ngIf="formError.order_product == true">Bạn hãy chọn sản phẩm</div>
@@ -153,20 +153,16 @@
                   [ngModelOptions]="{standalone: true}" placeholder="Số lượng"
                   (ngModelChange)="changeQuantity($event,i+1,false)"/>
            <br>
-           <input class="input-number" *ngIf="product.check === 3 && product.promotion !== undefined && product.quantity >= product.promotion.productConditionQuantity"  nbInput
-                  [ngModelOptions]="{standalone: true}" placeholder="{{product.promotion.rewardQuantity}}" disabled/>
+           <input class="input-number" *ngIf="product.check === 3 && product.promotion !== undefined && product.quantity >= product.promotion.productConditionQuantity"  nbInput placeholder="{{product.promotion.rewardQuantity}}" [ngModelOptions]="{standalone: true}" disabled/>
                 </td>
                 <td>
-                  <div *ngIf="product.salePrice !== product.originalPrice">
-                    <span class="price">{{product.salePrice|number}}</span> - <span
-                    class="line-through">{{product.originalPrice|number}}</span>
-                  </div>
-                  <div *ngIf="product.salePrice === product.originalPrice">
-                    <span class="price">{{product.salePrice|number}}</span>
-                  </div>
+                   <span>{{product.originalPrice|number}}</span>
+<!--                  <div *ngIf="product.salePrice === product.originalPrice">-->
+<!--                    <span class="price">{{product.salePrice|number}}</span>-->
+<!--                  </div>-->
                 </td>
                 <td>
-                  <span class="price">{{(product.salePrice * product.quantity)|number}}</span>
+                  <span class="price">{{(product.originalPrice * product.quantity)|number}}</span>
                 </td>
                 <td>
                   <nb-actions size="medium">
@@ -268,8 +264,7 @@
         <div class="form-group row">
           <label class="label col-sm-2 col-form-label">Thời gian sử dụng SP :</label>
           <div class="col-sm-2">
-            <input [(ngModel)]="useOfDay" [ngModelOptions]="{standalone: true}" nbInput type="number" min="0" step="1"
-                   name="useOfDay"/>
+            <input [(ngModel)]="useOfDay" [ngModelOptions]="{standalone: true}" nbInput type="number" min="0" step="1" name="useOfDay"/>
             <div class="form-error" *ngIf="formError.useOfDay == true">Hãy chọn giá trị > 0</div>
           </div>
           <label class="label col-sm-2 col-form-label">ngày.</label>
@@ -284,8 +279,7 @@
         <div class="form-group row">
           <label class="label col-sm-2 col-form-label">Nguồn tạo</label>
           <div class="col-sm-4">
-            <ng-select [items]="listSource" [(ngModel)]="createdSource" bindValue="id" bindLabel="name"
-                       placeholder="Chọn nguồn">
+            <ng-select [items]="listSource" [(ngModel)]="createdSource" bindValue="id" bindLabel="name" placeholder="Chọn nguồn">
             </ng-select>
           </div>
           <label class="label col-sm-2 col-form-label">Trạng thái thanh toán</label>
