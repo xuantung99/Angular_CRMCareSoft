@@ -5,10 +5,10 @@
  */
 export const environment = {
   production: true,
-  webAdminURL: 'https://backend.5nhatnhat.com',
+  webAdminURL: 'http://192.168.100.99:5607',
   baseUrl: '/CRM-CareSoft/',
-  apiUrl: 'https://backend.5nhatnhat.com',
-  productImgUrl: 'https://static-prod.5nhatnhat.com',
+  apiUrl: 'http://192.168.100.99:5607',
+  productImgUrl: 'http://192.168.100.99:5607',
   defaultLanguage: 'vi',
   supportedLanguages: [
     'en',

@@ -12,6 +12,7 @@
   .price {
     color: red;
   }
+
   .promotion {
     color: rgb(30, 255, 0);
   }
@@ -22,4 +23,10 @@
 }
 input.ng-untouched.ng-pristine.input-full-width.size-medium.status-basic.shape-rectangle.nb-transition {
   color: black !important;
+}
+
+.order-form-promotion-list{
+  border: orange 1px solid;
+  padding: 10px;
+  font-size: 14px;
 }

@@ -5,7 +5,6 @@ import {NbTabComponent, NbTabsetComponent, NbThemeService, NbWindowRef, NbWindow
 import {debounceTime, distinctUntilChanged, switchMap, takeWhile, tap} from 'rxjs/operators';
 import {NotiService} from '../../../@core/services/noti.service';
 import {NbAuthJWTToken, NbAuthService} from '@nebular/auth';
-import {ShowPromotionComponent} from '../show-promotion/showPromotion.component';
 import {PromotionComponent} from '../promotion/promotion.component';
 import {AppConstants} from '../../../@core/utils/app.constants';
 import {OpportunityService} from '../../../@core/services/opportunity.service';
@@ -48,11 +47,7 @@ export class FormOrderComponent implements OnInit, OnDestroy {
   statusCards: string;
   popup: boolean = false;
   paidStatus = false;
-  shipProvinceCode: string;
-  shipDistrictCode: string;
   shipSubDistrictCode: string;
-  shipWeight: number = 0;
-  shippingFeeAmount: number = 0;
   point = 0;
   totalPoint = 0;
   coefficientPoint = 10000;
@@ -149,13 +144,11 @@ export class FormOrderComponent implements OnInit, OnDestroy {
   user: any;
   inventories: any;
   productInfo: any = null;
-  inventoryId: any;
   provinces: any;
   districts: any;
   subDistricts: any;
   productId: any;
   product: any;
-  paymentBankImg: any;
   searchProductId: any;
   contentProductId: any;
   shipment: any;
@@ -468,19 +461,6 @@ export class FormOrderComponent implements OnInit, OnDestroy {
   // end
   // action
   // start
-  createReUp() {
-    if (window.confirm('Bạn có mở lại phiếu không ?')) {
-      this.loading = true;
-      this.opportunityService.CreateOppUpSaleFromOpp(this.opp.id).then((data: any) => {
-        this.noti.success(AppConstants.createSuccessMessage);
-        this.loading = false;
-        this.router.navigate(['/opportunity/edit/' + data.id]);
-      }).catch(() => {
-        this.noti.error('Phiếu không thể sửa hoăc mở lại!');
-        this.loading = false;
-      });
-    }
-  }
 
   calcUseOfDay(dataP) {
     if (dataP.length > 0) {
@@ -773,15 +753,6 @@ export class FormOrderComponent implements OnInit, OnDestroy {
     }
   }
 
-  // selectedKeyword(item) {
-  //   this.keywords = item;
-  //   this.searchDataContent();
-  // }
-  //
-  // addTagFn(name) {
-  //   return {id: 0, keyword: name, tag: true};
-  // }
-
   createLocation() {
     const ship: any = {};
     ship.shippingAddressId = 0;
@@ -972,46 +943,15 @@ export class FormOrderComponent implements OnInit, OnDestroy {
   }
 
   getPromotionByProduct(productId, quantity?, index?) {
-    // gửi thông sản phẩm lên check khuyến mãi đối với loại khuyến mãi theo sản phẩm
-    // sản phẩm không phải combo
-    // 1. Sản phẩm không phải combo
     const promotionModel = [];
     promotionModel.push(
-      {
-        productId: productId,
-        quantity: quantity !== null ? parseInt(quantity, 10) : 1,
-      },
+      {productId: productId,
+        quantity: quantity !== null ? parseInt(quantity, 10) : 1},
     );
     this.promotionService.getByMultipleProductsV2(promotionModel).subscribe((data: any) => {
-      console.log(data);
+      // console.log(data);
       if (data.length > 0) {
         this.products[index - 1].promotion = data;
-        // console.log(data);
-        for (const pro of data) {
-          if (pro.productId === productId) {
-            for (const pr of this.products) {
-              if (pr.itemId === productId) {
-                if (pro.rewardType === 2 || pro.rewardType === 1) {
-                  pr.salePrice = pr.originalPrice - pro.rewardDiscount;
-                  pr.check = 1;
-                  pr.promotion = pro;
-                  console.log(pr);
-                } else {
-                  const pDetail = this.dataP.find(x => x.Id === pro.rewardProductId);
-                  if (pDetail) {
-                    pr.check = 3;
-                    pr.promotion = pro;
-                    pr.promotion.productName = pDetail.Name;
-                    pr.promotion.salePrice = pDetail.ProductSkus[0].SalePrice;
-                    pr.promotion.weight = pDetail.ProductSkus[0].WeightGram;
-                    pr.promotion.sku = pDetail.ProductSkus[0].Sku;
-                    console.log(pr);
-                  }
-                }
-              }
-            }
-          }
-        }
       }
 
       let total = 0;
@@ -1226,17 +1166,6 @@ export class FormOrderComponent implements OnInit, OnDestroy {
   createOrder() {
     this.checkCreateOrder = 0;
     this.checkDataOrder();
-  }
-
-
-  addfile(event) {
-    this.formError.attachmentData = false;
-    const file = event.target.files[0];
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => {
-      this.paymentBankImg = reader.result;
-    };
   }
 
   getRandomInt(min, max) {
@@ -1488,7 +1417,6 @@ export class FormOrderComponent implements OnInit, OnDestroy {
           }
         }
       });
-
     }
     // HuyPX : nếu là combo khuyến mãi thì tạo item trong này
     if (this.HasPromotion === 1 && this.dataCombo.length > 0) {
@@ -1538,66 +1466,6 @@ export class FormOrderComponent implements OnInit, OnDestroy {
         }
       }
     });
-  }
-
-  showPromotionDetail(promo) {
-    this.windowService.open(
-      ShowPromotionComponent,
-      {
-        title: 'Thông tin khuyến mại',
-        context: {locations: this.provinces, promotion: promo},
-      },
-    );
-  }
-
-  changeShipProvince(event): void {
-    if (event !== undefined) {
-      this.locationService.getDistrictByProvinceId(this.shipProvinceCode).then(data => {
-        this.districts = data;
-        this.shipDistrictCode = null;
-        this.shipSubDistrictCode = null;
-      });
-    }
-  }
-
-  changeShipDistrict(event): void {
-    if (event !== undefined) {
-      this.locationService.getSubDistrictByDistrictId(this.shipDistrictCode).then(data => {
-        this.subDistricts = data;
-        this.shipSubDistrictCode = null;
-      });
-    }
-  }
-
-  shipingFee(): void {
-    this.formError = {};
-    let check = true;
-    if (this.shipProvinceCode === undefined || this.shipProvinceCode === null) {
-      this.formError.shipProvinceCode = true;
-      check = false;
-    }
-
-    if (this.shipDistrictCode === undefined || this.shipDistrictCode === null) {
-      this.formError.shipDistrictCode = true;
-      check = false;
-    }
-    if (this.shipWeight === undefined || this.shipWeight === null || this.shipWeight <= 0) {
-      this.formError.shipWeight = true;
-      check = false;
-    }
-    if (check) {
-      const dataR: any = {};
-      dataR.inventoryCode = this.inventoryId;
-      dataR.toProvinceCode = this.shipProvinceCode;
-      dataR.toDistrictCode = this.shipDistrictCode;
-      dataR.toSubDistrictCode = this.shipSubDistrictCode;
-      dataR.itemBatchWeight = this.shipWeight;
-      this.otherService.calcShipingFee(dataR).then((dat: any = {}) => {
-        this.shippingFeeAmount = dat.fee;
-      }).catch(ex => {
-        this.noti.error(ex);
-      });
-    }
   }
 
   adsDiscountCode() {
@@ -1687,15 +1555,6 @@ export class FormOrderComponent implements OnInit, OnDestroy {
     }
   }
 
-  showOrderStatus(status) {
-    const item = this.listOrderStatus.find(x => x.id === status);
-    if (item === undefined) {
-      return '';
-    } else {
-      return item.name;
-    }
-  }
-
   getOrderInfo(orderCode) {
     this.orderService.getByOrderCode(orderCode).then((data: any) => {
       this.orderInfo = data;
@@ -1736,5 +1595,38 @@ export class FormOrderComponent implements OnInit, OnDestroy {
     this.alive = false;
   }
 
+  updatePromotion(product: any, promotion: any) {
+    if (promotion === 0) {
+      product.saleprice = product.originalPrice;
+    } else {
+      product.saleprice = product.originalPrice - promotion.rewardDiscount;
+    }
+  }
+
   protected readonly console = console;
 }
+
+// if (pro.productId === productId) {
+//   for (const pr of this.products) {
+//     if (pr.itemId === productId) {
+//       if (pro.rewardType === 2 || pro.rewardType === 1) {
+//         pr.salePrice = pr.originalPrice - pro.rewardDiscount;
+//         pr.check = 1;
+//         pr.promotion.push(pro);
+//         // console.log(pr);
+//       } else {
+//         const pDetail = this.dataP.find(x => x.Id === pro.rewardProductId);
+//         if (pDetail) {
+//           pr.check = 3;
+//           pr.promotion.push(pro);
+//           pr.promotion.productName = pDetail.Name;
+//           pr.promotion.salePrice = pDetail.ProductSkus[0].SalePrice;
+//           pr.promotion.weight = pDetail.ProductSkus[0].WeightGram;
+//           pr.promotion.sku = pDetail.ProductSkus[0].Sku;
+//           // console.log(pr);
+//         }
+//       }
+//     }
+//   }
+// }
+// }

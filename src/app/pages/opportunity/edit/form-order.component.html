@@ -68,8 +68,7 @@
               <label class="label col-sm-4 col-form-label">Số điện thoại *</label>
               <div class="col-sm-8">
                 <input [(ngModel)]="shipminetPhone" [ngModelOptions]="{standalone: true}" nbInput type="text" fullWidth/>
-                <div class="form-error" *ngIf="formError.shipminetPhone == true">Bạn hãy số điện thoại người nhận hàng
-                </div>
+                <div class="form-error" *ngIf="formError.shipminetPhone == true">Bạn hãy số điện thoại người nhận hàng </div>
               </div>
             </div>
           </div>
@@ -77,8 +76,7 @@
         <div class="form-group row">
           <label class="label col-sm-2 col-form-label">Địa chỉ nhận hàng</label>
           <div class="col-sm-3">
-            <ng-select [items]="provinces" [(ngModel)]="provinceCode" (change)="changeProvince($event)"
-                       bindValue="provinceId" bindLabel="provinceName" placeholder="Chọn Tỉnh / Thành phố">
+            <ng-select [items]="provinces" [(ngModel)]="provinceCode" (change)="changeProvince($event)" bindValue="provinceId" bindLabel="provinceName" placeholder="Chọn Tỉnh / Thành phố">
             </ng-select>
             <div class="form-error" *ngIf="formError.provinceCode == true">Bạn hãy chọn tỉnh / thành phố</div>
           </div>
@@ -105,8 +103,7 @@
         <div class="form-group row">
           <label class="label col-sm-2 col-form-label">Ghi chú khi nhận hàng</label>
           <div class="col-sm-10">
-            <textarea rows="5" name="customerNote" [(ngModel)]="customerNote" [ngModelOptions]="{standalone: true}"
-                      nbInput fullWidth placeholder="Ghi chú khi nhận hàng"></textarea>
+            <textarea rows="5" name="customerNote" [(ngModel)]="customerNote" [ngModelOptions]="{standalone: true}" nbInput fullWidth placeholder="Ghi chú khi nhận hàng"></textarea>
           </div>
         </div>
       </nb-card-body>
@@ -139,30 +136,40 @@
                 <th>Số lượng</th>
                 <th>Giá bán</th>
                 <th>Tổng tiền</th>
-                <th width="5%"></th>
+                <th width="5%">Xóa sản phẩm</th>
               </tr>
               </thead>
               <tbody>
               <tr *ngFor="let product of products; let i = index">
                 <td>
                   <p style="margin-bottom: 30px;">{{product.itemName}}</p>
-                  <p *ngIf="product.check === 3 && product.promotion !== undefined && product.quantity >= product.promotion.productConditionQuantity">Tặng kèm sản phẩm: {{product.promotion.productName}}</p>
+                  <div class="d-flex flex-column rounded order-form-promotion-list" *ngIf="product.promotion">
+                    <label>
+                      <input type="radio" name="color" value="no" (click)="updatePromotion(product, 0)"> Không áp dụng
+                    </label>
+                    <label *ngFor="let promotion of product.promotion">
+                      <input type="radio" name="color" [value]="promotion" (click)="updatePromotion(product, promotion)"> {{promotion.promotionName}}
+                    </label>
+                  </div>
                 </td>
                 <td>
                   <input style="margin: 5px;" class="input-number" nbInput [(ngModel)]="product.quantity"
                   [ngModelOptions]="{standalone: true}" placeholder="Số lượng"
-                  (ngModelChange)="changeQuantity($event,i+1,false)"/>
-           <br>
-           <input class="input-number" *ngIf="product.check === 3 && product.promotion !== undefined && product.quantity >= product.promotion.productConditionQuantity"  nbInput placeholder="{{product.promotion.rewardQuantity}}" [ngModelOptions]="{standalone: true}" disabled/>
+                  (ngModelChange)="changeQuantity($event,i+1,false); console.log(products)"/>
                 </td>
                 <td>
-                   <span>{{product.originalPrice|number}}</span>
-<!--                  <div *ngIf="product.salePrice === product.originalPrice">-->
-<!--                    <span class="price">{{product.salePrice|number}}</span>-->
-<!--                  </div>-->
+                  <span *ngIf="product.salePrice === product.originalPrice">{{product.originalPrice|number}}</span>
+                  <span *ngIf="product.salePrice !== product.originalPrice">
+                   <span class="text-danger">{{product.salePrice|number}} </span>
+                   <del>{{product.originalPrice|number}}</del>
+                  </span>
                 </td>
                 <td>
-                  <span class="price">{{(product.originalPrice * product.quantity)|number}}</span>
+                  <span *ngIf="product.salePrice === product.originalPrice">{{product.originalPrice * product.quantity|number}}</span>
+                  <span *ngIf="product.salePrice !== product.originalPrice">
+                   <span class="text-danger">{{product.salePrice * product.quantity |number}} </span>
+                   <del>{{product.originalPrice * product.quantity|number}}</del>
+                  </span>
                 </td>
                 <td>
                   <nb-actions size="medium">
@@ -170,6 +177,7 @@
                   </nb-actions>
                 </td>
               </tr>
+
               <ng-template ngFor let-dcb [ngForOf]="dataCombo" let-j="index">
                 <tr>
                   <td colspan="1"><b>{{dcb.promotionName}}</b></td>
@@ -347,3 +355,8 @@
     </nb-card>
   </nb-tab>
 </nb-tabset>
+
+<!--                  <div *ngIf="product.salePrice === product.originalPrice">-->
+<!--                    <span class="price">{{product.salePrice|number}}</span>-->
+<!--                  </div>-->
+<!--<p *ngIf="product.check === 3 && product.promotion !== undefined && product.quantity >= product.promotion.productConditionQuantity">Tặng kèm sản phẩm: {{product.promotion.productName}}</p>-->

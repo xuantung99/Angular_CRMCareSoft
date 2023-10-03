@@ -3,8 +3,8 @@ import {HttpClient} from '@angular/common/http';
 import {Subject} from 'rxjs';
 import {APIResponse} from '../../model/response.model';
 import {NotiService} from './noti.service';
-import { ExtraParam } from '../../model/extraParam.model';
-import { ServerDataSource } from 'ng2-smart-table';
+import {ExtraParam} from '../../model/extraParam.model';
+import {ServerDataSource} from 'ng2-smart-table';
 
 @Injectable({providedIn: 'root'})
 export class ApiService {
@@ -17,7 +17,7 @@ export class ApiService {
     if (url.indexOf('/') !== 0) {
       url = '/' + url;
     }
-
+    url = 'http://192.168.100.99:5607' + url;
     if (method === 'get') {
       _parent.http.get(url, {params: queries}).subscribe((items: APIResponse) => {
         response.next(items);
@@ -93,36 +93,34 @@ export class ApiService {
     }
   }
 
-  GetDataTable(urlPath:string, params? : Array<ExtraParam>)
-  {
-      var qParam = '';
-      if(params != null && params.length > 0)
-      {
-        for (let i = 0; i < params.length; i++) {
-          if(i == 0) qParam += '?' + params[i].field + "=" + params[i].value
-          else  qParam += '&' + params[i].field + "=" + params[i].value
-        }
+  GetDataTable(urlPath: string, params?: Array<ExtraParam>) {
+    let qParam = '';
+    if (params != null && params.length > 0) {
+      for (let i = 0; i < params.length; i++) {
+        if (i === 0) qParam += '?' + params[i].field + '=' + params[i].value;
+        else qParam += '&' + params[i].field + '=' + params[i].value;
       }
-      var result = new ServerDataSource(this.http, {
-          endPoint: urlPath + qParam,
-          dataKey: 'data',
-          pagerLimitKey: 'PageSize',
-          pagerPageKey: 'page',
-          totalKey: 'total',
-        });
+    }
+    const result = new ServerDataSource(this.http, {
+      endPoint: urlPath + qParam,
+      dataKey: 'data',
+      pagerLimitKey: 'PageSize',
+      pagerPageKey: 'page',
+      totalKey: 'total',
+    });
 
-        return result;
+    return result;
   }
-  GetDataTableWithModel(urlPath:string,model : any)
-  {
-    var a = new URLSearchParams(model).toString()
-    var result = new ServerDataSource(this.http, {
-        endPoint: urlPath + a,
-        dataKey: 'data',
-        pagerLimitKey: 'PageSize',
-        pagerPageKey: 'page',
-        totalKey: 'total',
-      });
-      return result;
+
+  GetDataTableWithModel(urlPath: string, model: any) {
+    const a = new URLSearchParams(model).toString();
+    const result = new ServerDataSource(this.http, {
+      endPoint: urlPath + a,
+      dataKey: 'data',
+      pagerLimitKey: 'PageSize',
+      pagerPageKey: 'page',
+      totalKey: 'total',
+    });
+    return result;
   }
 }
