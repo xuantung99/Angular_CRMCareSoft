@@ -17,7 +17,6 @@ export class ApiService {
     if (url.indexOf('/') !== 0) {
       url = '/' + url;
     }
-    url = 'http://192.168.100.99:5607' + url;
     if (method === 'get') {
       _parent.http.get(url, {params: queries}).subscribe((items: APIResponse) => {
         response.next(items);

@@ -1,5 +1,5 @@
 <nb-card *ngIf="!IdChecked" class="text-center">
-  <nb-card-header class="py-4">Id không hợp lệ</nb-card-header>
+  <nb-card-header class="py-4">Id không hợp lệ {{IdChecked}}</nb-card-header>
 </nb-card>
 <nb-tabset *ngIf="IdChecked" fullWidth #tabDetail [nbSpinner]="loading" nbSpinnerSize="giant" nbSpinnerStatus="primary">
   <nb-tab tabTitle="Thông tin đơn hàng" #tabOrder>
@@ -16,7 +16,8 @@
         <div class="form-group row">
           <label class="label col-sm-2 col-form-label">Số điện thoại</label>
           <div class="col-sm-4">
-            <input [(ngModel)]="customerPhone" [ngModelOptions]="{standalone: true}" (ngModelChange)="addPhone()" nbInput type="text" disabled fullWidth/>
+            <input [(ngModel)]="customerPhone" [ngModelOptions]="{standalone: true}" (ngModelChange)="addPhone()"
+                   nbInput type="text" disabled fullWidth/>
             <div class="form-error" *ngIf="formError.phone == true">Số điện thoại không được phép để trống</div>
           </div>
         </div>
@@ -34,15 +35,14 @@
         <div class="form-group row">
           <label class="label col-sm-2 col-form-label">Chọn địa chỉ</label>
           <div class="col-sm-6">
-            <ng-select [items]="shipMents" [(ngModel)]="shippingAddressId" (change)="selectShipment($event)"
-                       bindValue="shippingAddressId" placeholder="Danh sách địa chỉ">
+            <ng-select [items]="shipMents" [(ngModel)]="shippingAddressId" (change)="selectShipment($event)" bindValue="shippingAddressId" placeholder="Danh sách địa chỉ">
               <ng-template ng-label-tmp let-item="item">
                 <span>{{ item.address }} - {{ item.subDistrictName }} - {{ item.districtName }}
                   - {{ item.provinceName }}</span>
               </ng-template>
               <ng-template ng-option-tmp let-item="item">
-                <span>{{ item.address }} - {{ item.subDistrictName }} - {{ item.districtName }}
-                  - {{ item.provinceName }}</span>
+                <span>{{item.address}} - {{item.subDistrictName}} - {{item.districtName}}
+                  - {{item.provinceName}}</span>
               </ng-template>
             </ng-select>
           </div>
@@ -59,7 +59,9 @@
               <div class="col-sm-8">
                 <input [(ngModel)]="shipminetFullname" [ngModelOptions]="{standalone: true}" nbInput type="text"
                        fullWidth/>
-                <div class="form-error" *ngIf="formError.shipminetFullname == true">Bạn hãy nhập họ tên người nhận hàng</div>
+                <div class="form-error" *ngIf="formError.shipminetFullname == true">Bạn hãy nhập họ tên người nhận
+                  hàng
+                </div>
               </div>
             </div>
           </div>
@@ -67,8 +69,10 @@
             <div class="form-group row">
               <label class="label col-sm-4 col-form-label">Số điện thoại *</label>
               <div class="col-sm-8">
-                <input [(ngModel)]="shipminetPhone" [ngModelOptions]="{standalone: true}" nbInput type="text" fullWidth/>
-                <div class="form-error" *ngIf="formError.shipminetPhone == true">Bạn hãy số điện thoại người nhận hàng </div>
+                <input [(ngModel)]="shipminetPhone" [ngModelOptions]="{standalone: true}" nbInput type="text"
+                       fullWidth/>
+                <div class="form-error" *ngIf="formError.shipminetPhone == true">Bạn hãy số điện thoại người nhận hàng
+                </div>
               </div>
             </div>
           </div>
@@ -76,17 +80,20 @@
         <div class="form-group row">
           <label class="label col-sm-2 col-form-label">Địa chỉ nhận hàng</label>
           <div class="col-sm-3">
-            <ng-select [items]="provinces" [(ngModel)]="provinceCode" (change)="changeProvince($event)" bindValue="provinceId" bindLabel="provinceName" placeholder="Chọn Tỉnh / Thành phố">
+            <ng-select [items]="provinces" [(ngModel)]="provinceCode" (change)="changeProvince($event)"
+                       bindValue="provinceId" bindLabel="provinceName" placeholder="Chọn Tỉnh / Thành phố">
             </ng-select>
             <div class="form-error" *ngIf="formError.provinceCode == true">Bạn hãy chọn tỉnh / thành phố</div>
           </div>
           <div class="col-sm-3">
-            <ng-select [items]="districts" [(ngModel)]="districtCode" (change)="changeDistrict($event)" bindValue="districtId" bindLabel="districtName" placeholder="Chọn Quận / Huyện">
+            <ng-select [items]="districts" [(ngModel)]="districtCode" (change)="changeDistrict($event)"
+                       bindValue="districtId" bindLabel="districtName" placeholder="Chọn Quận / Huyện">
             </ng-select>
             <div class="form-error" *ngIf="formError.districtCode == true">Bạn hãy chọn quận / huyện</div>
           </div>
           <div class="col-sm-4">
-            <ng-select [items]="subDistricts" [(ngModel)]="subDistrictCode" (change)="changeSubDistrict($event)" bindValue="wardId" bindLabel="wardName" placeholder="Chọn phường / xã">
+            <ng-select [items]="subDistricts" [(ngModel)]="subDistrictCode" (change)="changeSubDistrict($event)"
+                       bindValue="wardId" bindLabel="wardName" placeholder="Chọn phường / xã">
             </ng-select>
             <div class="form-error" *ngIf="formError.subDistrictCode == true">Bạn hãy chọn xã / phường</div>
           </div>
@@ -103,7 +110,8 @@
         <div class="form-group row">
           <label class="label col-sm-2 col-form-label">Ghi chú khi nhận hàng</label>
           <div class="col-sm-10">
-            <textarea rows="5" name="customerNote" [(ngModel)]="customerNote" [ngModelOptions]="{standalone: true}" nbInput fullWidth placeholder="Ghi chú khi nhận hàng"></textarea>
+            <textarea rows="5" name="customerNote" [(ngModel)]="customerNote" [ngModelOptions]="{standalone: true}"
+                      nbInput fullWidth placeholder="Ghi chú khi nhận hàng"></textarea>
           </div>
         </div>
       </nb-card-body>
@@ -114,12 +122,14 @@
           <div class="row">
             <div class="col-sm-2">Tìm kiếm sản phẩm</div>
             <div class="col-sm-6">
-              <ng-select [items]="dataPC" [(ngModel)]="productId" (change)="selectProduct($event)" bindValue="Id" bindLabel="Name" placeholder="Chọn sản phẩm">
+              <ng-select [items]="dataPC" [(ngModel)]="productId" (change)="selectProduct($event)" bindValue="Id"
+                         bindLabel="Name" placeholder="Chọn sản phẩm">
               </ng-select>
             </div>
             <div class="buttons-row col-sm-4">
               <button (click)="addProductToOrder()" type="button" nbButton status="info">Thêm
-              SP</button>
+                SP
+              </button>
             </div>
           </div>
           <div class="form-error" *ngIf="formError.order_product == true">Bạn hãy chọn sản phẩm</div>
@@ -148,14 +158,15 @@
                       <input type="radio" name="color" value="no" (click)="updatePromotion(product, 0)"> Không áp dụng
                     </label>
                     <label *ngFor="let promotion of product.promotion">
-                      <input type="radio" name="color" [value]="promotion" (click)="updatePromotion(product, promotion)"> {{promotion.promotionName}}
+                      <input type="radio" name="color" [value]="promotion"
+                             (click)="updatePromotion(product, promotion)"> {{promotion.promotionName}}
                     </label>
                   </div>
                 </td>
                 <td>
                   <input style="margin: 5px;" class="input-number" nbInput [(ngModel)]="product.quantity"
-                  [ngModelOptions]="{standalone: true}" placeholder="Số lượng"
-                  (ngModelChange)="changeQuantity($event,i+1,false); console.log(products)"/>
+                         [ngModelOptions]="{standalone: true}" placeholder="Số lượng"
+                         (ngModelChange)="changeQuantity($event,i+1,false); console.log(products)"/>
                 </td>
                 <td>
                   <span *ngIf="product.salePrice === product.originalPrice">{{product.originalPrice|number}}</span>
@@ -165,7 +176,8 @@
                   </span>
                 </td>
                 <td>
-                  <span *ngIf="product.salePrice === product.originalPrice">{{product.originalPrice * product.quantity|number}}</span>
+                  <span
+                    *ngIf="product.salePrice === product.originalPrice">{{product.originalPrice * product.quantity|number}}</span>
                   <span *ngIf="product.salePrice !== product.originalPrice">
                    <span class="text-danger">{{product.salePrice * product.quantity |number}} </span>
                    <del>{{product.originalPrice * product.quantity|number}}</del>
@@ -183,7 +195,8 @@
                   <td colspan="1"><b>{{dcb.promotionName}}</b></td>
                   <td colspan="1">
                     <input class="input-number" nbInput [(ngModel)]="dcb.quantity" [ngModelOptions]="{standalone: true}"
-                         placeholder="Số lượng" type="number" step="1" min="1" (ngModelChange)="changeQuantityCombo(j)"/>
+                           placeholder="Số lượng" type="number" step="1" min="1"
+                           (ngModelChange)="changeQuantityCombo(j)"/>
                   </td>
                   <td colspan="2"></td>
                   <td rowspan="{{dcb.promotionItems.length + 1}}">
@@ -202,14 +215,15 @@
                   <td>
                     <span class="price" *ngIf="product.free === true">Tặng kèm</span>
                     <span class="price" *ngIf="product.free !== true">
-                      <div >
+                      <div>
                         <span class="price">{{product.salePrice|number}}</span>
                       </div>
                     </span>
                   </td>
                   <td>
                     <span class="price" *ngIf="product.free === true">Tặng kèm</span>
-                    <span class="price" *ngIf="product.free !== true">{{(product.salePrice * product.quantity)|number}}</span>
+                    <span class="price"
+                          *ngIf="product.free !== true">{{(product.salePrice * product.quantity)|number}}</span>
                   </td>
                 </tr>
               </ng-template>
@@ -246,15 +260,19 @@
               </tr>
               <tr *ngIf="totaDiscount > 0 && shipment != null">
                 <td colspan="3">Thanh toán</td>
-                <td colspan="2"><span class="price">{{(totalAmount - totaDiscount + shipment.fee - (totalPoint * coefficientPoint))|number}}</span></td>
+                <td colspan="2"><span
+                  class="price">{{(totalAmount - totaDiscount + shipment.fee - (totalPoint * coefficientPoint))|number}}</span>
+                </td>
               </tr>
               <tr *ngIf="totaDiscount == 0 && shipment != null">
                 <td colspan="3">Thanh toán</td>
-                <td colspan="2"><span class="price">{{(totalAmount + shipment.fee - (totalPoint * coefficientPoint))|number}}</span></td>
+                <td colspan="2"><span
+                  class="price">{{(totalAmount + shipment.fee - (totalPoint * coefficientPoint))|number}}</span></td>
               </tr>
               <tr *ngIf="totaDiscount > 0 && shipment == null">
                 <td colspan="3">Thanh toán</td>
-                <td colspan="2"><span class="price">{{(totalAmount - totaDiscount - (totalPoint * coefficientPoint))|number}}</span></td>
+                <td colspan="2"><span
+                  class="price">{{(totalAmount - totaDiscount - (totalPoint * coefficientPoint))|number}}</span></td>
               </tr>
               </tbody>
             </table>
@@ -262,24 +280,28 @@
         </div>
         <div class="form-group row" *ngIf="point > 0">
           <label class="label col-sm-2 col-form-label">Áp dụng điểm cho đơn hàng :</label>
-          <label class="col-sm-4 col-form-label">Số điểm hiện tại của tài khoản ({{this.customerPhone}}) là : {{point}}</label>
+          <label class="col-sm-4 col-form-label">Số điểm hiện tại của tài khoản ({{this.customerPhone}}) là
+            : {{point}}</label>
           <label class="label col-sm-2 col-form-label">Số điểm sử dụng >= {{conditionPoint}}</label>
           <div class="col-sm-4">
-            <ng-select [items]="itemsPoint" [(ngModel)]="totalPoint" bindValue="id" bindLabel="name" placeholder="Chọn điểm sử dụng">
+            <ng-select [items]="itemsPoint" [(ngModel)]="totalPoint" bindValue="id" bindLabel="name"
+                       placeholder="Chọn điểm sử dụng">
             </ng-select>
           </div>
         </div>
         <div class="form-group row">
           <label class="label col-sm-2 col-form-label">Thời gian sử dụng SP :</label>
           <div class="col-sm-2">
-            <input [(ngModel)]="useOfDay" [ngModelOptions]="{standalone: true}" nbInput type="number" min="0" step="1" name="useOfDay"/>
+            <input [(ngModel)]="useOfDay" [ngModelOptions]="{standalone: true}" nbInput type="number" min="0" step="1"
+                   name="useOfDay"/>
             <div class="form-error" *ngIf="formError.useOfDay == true">Hãy chọn giá trị > 0</div>
           </div>
           <label class="label col-sm-2 col-form-label">ngày.</label>
           <label class="label col-sm-2 col-form-label">Đơn vị vận chuyển</label>
           <div class="col-sm-4">
             <ng-select [items]="shipmentList" [(ngModel)]="shipmentVendor"
-                       bindLabel="shipmentVendorCode" (change)="changeShipment($event)" placeholder="Chọn đơn vị vận chuyển">
+                       bindLabel="shipmentVendorCode" (change)="changeShipment($event)"
+                       placeholder="Chọn đơn vị vận chuyển">
             </ng-select>
             <div class="form-error" *ngIf="formError.shipmentVendor == true">Chọn đơn vị vận chuyển</div>
           </div>
@@ -287,7 +309,8 @@
         <div class="form-group row">
           <label class="label col-sm-2 col-form-label">Nguồn tạo</label>
           <div class="col-sm-4">
-            <ng-select [items]="listSource" [(ngModel)]="createdSource" bindValue="id" bindLabel="name" placeholder="Chọn nguồn">
+            <ng-select [items]="listSource" [(ngModel)]="createdSource" bindValue="id" bindLabel="name"
+                       placeholder="Chọn nguồn">
             </ng-select>
           </div>
           <label class="label col-sm-2 col-form-label">Trạng thái thanh toán</label>
@@ -308,14 +331,16 @@
           <div class="col-sm-4">
             <input [(ngModel)]="discountCode" [ngModelOptions]="{standalone: true}" nbInput type="text"
                    name="discountCode" placeholder="Nhập mã khuyến mại"/>
-            <button *ngIf="discountCode != '' && discountCode != undefined" nbButton status="info" type="button" (click)="adsDiscountCode()">Áp dụng </button>
+            <button *ngIf="discountCode != '' && discountCode != undefined" nbButton status="info" type="button"
+                    (click)="adsDiscountCode()">Áp dụng
+            </button>
             <div class="form-error" *ngIf="formError.discountCode == true">{{discountCodeE}}</div>
           </div>
         </div>
         <div class="form-group row" *ngIf="promotionSelected.length > 0">
           <label class="label col-sm-2 col-form-label"></label>
           <div class="col-sm-4 row">
-            <div class="col-12 " ><span>Khuyến mãi áp dụng</span></div>
+            <div class="col-12 "><span>Khuyến mãi áp dụng</span></div>
             <div class="col-12 promotion" *ngFor="let promotion of promotionSelected">
               <span>{{promotion.name}}</span>
             </div>
@@ -331,7 +356,8 @@
         <div class="form-group row">
           <label class="label col-sm-2 col-form-label">Ghi chú nội bộ :</label>
           <div class="col-sm-10">
-            <textarea rows="5" name="Comment" [(ngModel)]="Comment" [ngModelOptions]="{standalone: true}" nbInput fullWidth placeholder="Ghi chú nội bộ"></textarea>
+            <textarea rows="5" name="Comment" [(ngModel)]="Comment" [ngModelOptions]="{standalone: true}" nbInput
+                      fullWidth placeholder="Ghi chú nội bộ"></textarea>
           </div>
         </div>
         <div class="form-group row" *ngIf="checkCreateOrder === 1">

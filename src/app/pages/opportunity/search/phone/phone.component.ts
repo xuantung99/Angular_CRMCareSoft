@@ -33,6 +33,32 @@ export class PhoneComponent implements OnInit {
     private customerService: CustomerService,
     private opportunityService: OpportunityService,
     private orderService: OrderService) {
+    this.route.queryParams.subscribe(params => {
+      this.phoneNumber = params['phone'];
+    });
+  }
+
+  ngOnInit(): void {
+    console.log('SỐ ĐỆN THOẠI' , this.phoneNumber);
+    // Validate phone number
+    if (this.validatePhoneNumber(this.phoneNumber))
+      this.customerService.searchUsers(this.phoneNumber).subscribe(data => {
+        // Check if phone number exist
+        if (data === null) {
+          this.errorLog = 'Số điện thoại không tồn tại';
+          console.log(this.errorLog);
+        } else {
+          this.customer = data[0];
+          this.checkPoint('', this.customer.customerId);
+          this.getListOpp(this.customer.phone);
+          this.orderService.getOrderInfosByCustomer(this.customer.customerId).subscribe(
+            (dataOrderData) => {
+              this.dataOrder = dataOrderData;
+            });
+          this.orderService.getOrderItemsByCustomer(this.customer.customerId, 0, 50).subscribe((dataProductData) => {
+            this.dataProduct = dataProductData;
+          })
+        }})
   }
 
   showPhone(telephone): string {
@@ -89,31 +115,7 @@ export class PhoneComponent implements OnInit {
       this.errorLog =  'Bạn chưa điền số điện thoại!';
       console.log(this.errorLog);
       return false;
-    }
-  }
-
-  ngOnInit(): void {
-    this.phoneNumber = this.route.snapshot.paramMap.get('phone');
-    // Validate phone number
-    if (this.validatePhoneNumber(this.phoneNumber) === true)
-    this.customerService.searchUsers(this.phoneNumber).subscribe(data => {
-      // Check if phone number exist
-      if (data === null) {
-        this.errorLog = 'Số điện thoại không tồn tại';
-        console.log(this.errorLog);
-      } else {
-        this.customer = data[0];
-        this.checkPoint('', this.customer.customerId);
-        this.getListOpp(this.customer.phone);
-        this.orderService.getOrderInfosByCustomer(this.customer.customerId).subscribe(
-          (dataOrderData) => {
-            this.dataOrder = dataOrderData;
-          });
-        this.orderService.getOrderItemsByCustomer(this.customer.customerId, 0, 50).subscribe((dataProductData) => {
-          this.dataProduct = dataProductData;
-        });
-      }});
-  }
+    }}
 
   protected readonly Text = Text;
   protected readonly nbAuthCreateToken = nbAuthCreateToken;

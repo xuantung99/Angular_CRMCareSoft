@@ -8,8 +8,8 @@ const routes: Routes = [{
   path: '',
   component: PagesComponent,
   children: [
-    {path: 'opportunity/history/:phone', component: PhoneComponent},
-    {path: 'opportunity/edit/:id', component: FormOrderComponent},
+    {path: 'customer/history', component: PhoneComponent},
+    {path: 'order/create', component: FormOrderComponent},
   ],
 }];
 

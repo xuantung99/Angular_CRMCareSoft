@@ -44,7 +44,7 @@ export const NB_CORE_PROVIDERS = [
           getter: errorGetter,
         },
         login: {
-          endpoint: 'http://192.168.100.99:5607/api/auth/login',
+          endpoint: 'login',
           method: 'post',
           redirect: {
             success: '/',

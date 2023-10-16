@@ -11,6 +11,7 @@ import {MiscellaneousModule} from './miscellaneous/miscellaneous.module';
 import {OpportunityModule} from './opportunity/opportunity.module';
 import {ShowDescriptionComponent} from './showDescription.component';
 import { ClickOutsideDirective } from './ClickedOutside.Directive';
+import { OrderComponent } from './order/order.component';
 @NgModule({
   imports: [
     PagesRoutingModule,
@@ -27,6 +28,7 @@ import { ClickOutsideDirective } from './ClickedOutside.Directive';
     AViewOppComponent,
     ShowDescriptionComponent,
     ClickOutsideDirective,
+    OrderComponent,
   ],
 })
 export class PagesModule {

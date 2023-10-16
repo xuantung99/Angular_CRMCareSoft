@@ -89,7 +89,6 @@ export class FormOrderComponent implements OnInit, OnDestroy {
   private alive = true;
   applyWithCombo = false;
   HasPromotion = 0;
-  // array, list
   commonStatusCardsSet: CardSettings[] = [];
   listOpps: OpportunityModel[] = [];
   listPromotions = [];
@@ -160,25 +159,29 @@ export class FormOrderComponent implements OnInit, OnDestroy {
   orderInfo: any;
   IdChecked: boolean = false;
 
-
-  constructor(private themeService: NbThemeService,
-              private windowService: NbWindowService,
-              private opportunityService: OpportunityService,
-              private opportunityLogService: OpportunityLogService,
-              private opportunitySourceService: OpportunitySourceService,
-              private opportunityStatusService: OpportunityStatusService,
-              private productService: ProductService,
-              private customerService: CustomerService,
-              private locationService: LocationService,
-              private keywordService: KeywordService,
-              private orderService: OrderService,
-              private otherService: OtherService,
-              private promotionService: PromotionService,
-              private inventoryService: InventoryService,
-              private router: Router,
-              private authService: NbAuthService,
-              @Inject(ActivatedRoute) private routeA: ActivatedRoute,
-              private noti: NotiService) {
+  constructor(
+    private route: ActivatedRoute,
+    private themeService: NbThemeService,
+    private windowService: NbWindowService,
+    private opportunityService: OpportunityService,
+    private opportunityLogService: OpportunityLogService,
+    private opportunitySourceService: OpportunitySourceService,
+    private opportunityStatusService: OpportunityStatusService,
+    private productService: ProductService,
+    private customerService: CustomerService,
+    private locationService: LocationService,
+    private keywordService: KeywordService,
+    private orderService: OrderService,
+    private otherService: OtherService,
+    private promotionService: PromotionService,
+    private inventoryService: InventoryService,
+    private router: Router,
+    private authService: NbAuthService,
+    @Inject(ActivatedRoute) private routeA: ActivatedRoute,
+    private noti: NotiService) {
+    this.route.queryParams.subscribe(params => {
+      this.oppIdInput = params['ticket_id'];
+    });
     this.themeService.getJsTheme()
       .pipe(takeWhile(() => this.alive))
       .subscribe(theme => {
@@ -227,15 +230,17 @@ export class FormOrderComponent implements OnInit, OnDestroy {
       this.opp.id = parseInt(this.oppIdInput, 0);
       this.getOppDetail(this.oppIdInput);
       this.popup = true;
-    } else {
+    }
+    else {
       this.routeA.params.subscribe(params => {
         // console.log(params);
-        this.opp.id = params['id'] === undefined ? 0 : Number(params['id']);
+        this.opp.id = params['ticket_id'] === undefined ? 0 : Number(params['ticket_id']);
         if (this.opp.id > 0) {
           this.getOppDetail(this.opp.id);
         }
       });
     }
+    // console.log(this.oppIdInput, this.opp.id);
     this.promotionService.CheckApplyWithCombo().then((data: any) => {
       this.applyWithCombo = data;
     });
@@ -276,7 +281,7 @@ export class FormOrderComponent implements OnInit, OnDestroy {
     // console.log(oppId);
     this.opportunityService.getOpportuntyCareSoftById(oppId).subscribe(
       data => {
-        // console.log(data);
+        console.log(data);
         this.IdChecked = true;
         this.opp = data;
         this.opp.source = Number(this.opp.source);
@@ -786,7 +791,6 @@ export class FormOrderComponent implements OnInit, OnDestroy {
         } else {
           this.selectShipment(this.shipMents[0]);
         }
-
       } else {
         this.shipminetFullname = this.customer.fullName;
         this.shipminetPhone = this.customer.phone;
@@ -945,8 +949,10 @@ export class FormOrderComponent implements OnInit, OnDestroy {
   getPromotionByProduct(productId, quantity?, index?) {
     const promotionModel = [];
     promotionModel.push(
-      {productId: productId,
-        quantity: quantity !== null ? parseInt(quantity, 10) : 1},
+      {
+        productId: productId,
+        quantity: quantity !== null ? parseInt(quantity, 10) : 1,
+      },
     );
     this.promotionService.getByMultipleProductsV2(promotionModel).subscribe((data: any) => {
       // console.log(data);
