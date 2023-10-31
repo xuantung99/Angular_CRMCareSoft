@@ -1,5 +1,5 @@
 <nb-card *ngIf="!IdChecked" class="text-center">
-  <nb-card-header class="py-4">Id không hợp lệ {{IdChecked}}</nb-card-header>
+  <nb-card-header class="py-4">Id không hợp lệ</nb-card-header>
 </nb-card>
 <nb-tabset *ngIf="IdChecked" fullWidth #tabDetail [nbSpinner]="loading" nbSpinnerSize="giant" nbSpinnerStatus="primary">
   <nb-tab tabTitle="Thông tin đơn hàng" #tabOrder>

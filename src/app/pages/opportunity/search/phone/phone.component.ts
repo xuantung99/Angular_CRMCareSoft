@@ -1,18 +1,15 @@
-import {Component, OnInit, TemplateRef} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {CustomerService} from '../../../../@core/services/customer.service';
 import {OpportunityService} from '../../../../@core/services/opportunity.service';
 import {AppConstants} from '../../../../@core/utils/app.constants';
 import {OrderService} from '../../../../@core/services/order.service';
-import {nbAuthCreateToken} from '@nebular/auth';
-import {NgIfContext} from '@angular/common';
 
 @Component({
   selector: 'ngx-phone',
   templateUrl: './phone.component.html',
   styleUrls: ['./phone.component.scss'],
 })
-
 export class PhoneComponent implements OnInit {
   phoneNumber: string = '';
   customer: any = null;
@@ -25,7 +22,7 @@ export class PhoneComponent implements OnInit {
   contactStatus: any = AppConstants.contactStatus;
   listOrderStatus: any = AppConstants.orderStatus;
   dataOrder: Array<any> = [];
-  dataProduct: Array<any>  = [];
+  dataProduct: Array<any> = [];
   errorLog: string = '';
 
   constructor(
@@ -39,26 +36,23 @@ export class PhoneComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('SỐ ĐỆN THOẠI' , this.phoneNumber);
     // Validate phone number
     if (this.validatePhoneNumber(this.phoneNumber))
       this.customerService.searchUsers(this.phoneNumber).subscribe(data => {
+        // console.log(data[0]);
         // Check if phone number exist
         if (data === null) {
           this.errorLog = 'Số điện thoại không tồn tại';
-          console.log(this.errorLog);
         } else {
           this.customer = data[0];
           this.checkPoint('', this.customer.customerId);
           this.getListOpp(this.customer.phone);
-          this.orderService.getOrderInfosByCustomer(this.customer.customerId).subscribe(
-            (dataOrderData) => {
-              this.dataOrder = dataOrderData;
-            });
-          this.orderService.getOrderItemsByCustomer(this.customer.customerId, 0, 50).subscribe((dataProductData) => {
-            this.dataProduct = dataProductData;
-          })
-        }})
+          this.orderService.getOrderInfosByCustomer(this.customer.customerId).subscribe(dataOrderData => { this.dataOrder = dataOrderData});
+          this.orderService.getOrderItemsByCustomer(this.customer.customerId, 0, 50).subscribe(dataProductData => {
+              this.dataProduct = dataProductData;
+            console.log(this.dataProduct);
+          })}
+      })
   }
 
   showPhone(telephone): string {
@@ -67,17 +61,19 @@ export class PhoneComponent implements OnInit {
 
   checkPoint(phone: string = '', customerId: number = 0) {
     if ((phone !== null && phone !== undefined && phone.length >= 10) || (customerId !== null && customerId > 0)) {
-      this.customerService.checkPointByPhone(phone, customerId).then((data: any) => {
-        this.point = data.point;
-        this.pointFuture = data.pointFuture;
-      }).catch(() => {
-        this.point = 0;
-      });
+      // this.customerService.checkPointByPhone(phone, customerId).then((data: any) => {
+      //   this.point = data.point;
+      //   this.pointFuture = data.pointFuture;
+      // }).catch(() => {
+      //   this.point = 0;
+      // });
+      this.point = 0;
     }
   }
 
   getListOpp(phone): void {
     this.opportunityService.getOpportuntiesByPhone(phone.slice(-9), 1, 50, -1).then((data: any) => {
+      // console.log(data);
       this.dataOpp = data;
     });
   }
@@ -86,12 +82,7 @@ export class PhoneComponent implements OnInit {
     const item = items.find(x => x.id === id);
     if (item === undefined) {
       return '';
-    } else {
-      return item.name;
-    }
-  }
-
-  showPoint() {
+    } else return item.name;
   }
 
   showOrderStatus(status) {
@@ -108,17 +99,11 @@ export class PhoneComponent implements OnInit {
     if (phoneNumber !== '') {
       if (regex.test(phoneNumber) === false) {
         this.errorLog = 'Số điện thoại không đúng định dạng!';
-        console.log(this.errorLog);
         return false;
       } else return true;
     } else {
-      this.errorLog =  'Bạn chưa điền số điện thoại!';
-      console.log(this.errorLog);
+      this.errorLog = 'Bạn chưa điền số điện thoại!';
       return false;
-    }}
-
-  protected readonly Text = Text;
-  protected readonly nbAuthCreateToken = nbAuthCreateToken;
-  protected readonly TemplateRef = TemplateRef;
-  protected readonly NgIfContext = NgIfContext;
+    }
+  }
 }

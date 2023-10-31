@@ -177,10 +177,10 @@ export class FormOrderComponent implements OnInit, OnDestroy {
     private inventoryService: InventoryService,
     private router: Router,
     private authService: NbAuthService,
-    @Inject(ActivatedRoute) private routeA: ActivatedRoute,
-    private noti: NotiService) {
+    @Inject(ActivatedRoute) private routeA: ActivatedRoute, private noti: NotiService) {
     this.route.queryParams.subscribe(params => {
       this.oppIdInput = params['ticket_id'];
+      console.log(this.oppIdInput)
     });
     this.themeService.getJsTheme()
       .pipe(takeWhile(() => this.alive))
@@ -192,8 +192,7 @@ export class FormOrderComponent implements OnInit, OnDestroy {
       .subscribe((token: NbAuthJWTToken) => {
         if (token.isValid()) {
           this.user = token.getPayload();
-        }
-      });
+        }});
     this.locationService.getAllProvince().then(data => this.provinces = data);
   }
 

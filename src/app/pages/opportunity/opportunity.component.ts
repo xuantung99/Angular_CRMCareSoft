@@ -1,13 +1,13 @@
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { NbThemeService, NbWindowService, NbWindowRef } from '@nebular/theme';
-import { takeWhile } from 'rxjs/operators';
-import { HttpClient } from '@angular/common/http';
-import { ApiService } from '../../@core/services/api.service';
-import { NotiService } from '../../@core/services/noti.service';
-import { ServerDataSource } from 'ng2-smart-table';
-import { PermissionService } from '../../@core/services/permission.service';
-import { InsertOppComponent } from './import/insertOpp.component';
+import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {NbThemeService, NbWindowService, NbWindowRef} from '@nebular/theme';
+import {takeWhile} from 'rxjs/operators';
+import {HttpClient} from '@angular/common/http';
+import {ApiService} from '../../@core/services/api.service';
+import {NotiService} from '../../@core/services/noti.service';
+import {ServerDataSource} from 'ng2-smart-table';
+import {PermissionService} from '../../@core/services/permission.service';
+import {InsertOppComponent} from './import/insertOpp.component';
 
 interface CardSettings {
   title: string;
@@ -40,8 +40,8 @@ export class OpportunityComponent implements OnInit, OnDestroy {
     mode: 'external',
     actions: {
       add: false, edit: false, delete: false, position: 'right', custom: [
-        { name: 'viewAction', title: '<i class="nb-search"></i>' },
-        { name: 'editAction', title: '<i class="nb-plus-circled"></i>' },
+        {name: 'viewAction', title: '<i class="nb-search"></i>'},
+        {name: 'editAction', title: '<i class="nb-plus-circled"></i>'},
       ],
     },
     hideSubHeader: true,
@@ -103,11 +103,11 @@ export class OpportunityComponent implements OnInit, OnDestroy {
     corporate: CardSettings[];
     dark: CardSettings[];
   } = {
-      default: this.commonStatusCardsSet,
-      cosmic: this.commonStatusCardsSet,
-      corporate: this.commonStatusCardsSet,
-      dark: this.commonStatusCardsSet,
-    };
+    default: this.commonStatusCardsSet,
+    cosmic: this.commonStatusCardsSet,
+    corporate: this.commonStatusCardsSet,
+    dark: this.commonStatusCardsSet,
+  };
 
   constructor(private themeService: NbThemeService
     , private api: ApiService
@@ -126,13 +126,13 @@ export class OpportunityComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.api.get('/api/customer_support/OpportunitySource/all', { take: 1000 }).subscribe(
+    this.api.get('/api/customer_support/OpportunitySource/all', {take: 1000}).subscribe(
       (res: any) => {
         this.oppSource = res.data;
       },
     );
 
-    this.api.get('/api/customer_support/OpportunityStatus/all', { take: 1000 }).subscribe(
+    this.api.get('/api/customer_support/OpportunityStatus/all', {take: 1000}).subscribe(
       (res: any) => {
         this.oppStatus = res.data;
       },
@@ -161,7 +161,6 @@ export class OpportunityComponent implements OnInit, OnDestroy {
   }
 
   getdataOpp(): void {
-    const querySearch: any = {};
     let qParams: string = ``;
     if (this.phone !== '') {
       if (qParams === '') {

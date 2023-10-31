@@ -8,11 +8,9 @@ import { LayoutService } from '../@core/utils';
 @Component({
   selector: 'ngx-pages',
   styleUrls: ['pages.component.scss'],
-  template: `
-    <ngx-one-column-layout >
+  template: `<ngx-one-column-layout>
       <router-outlet></router-outlet>
-    </ngx-one-column-layout>
-  `,
+    </ngx-one-column-layout>`,
 })
 export class PagesComponent {
   menu: any = [];

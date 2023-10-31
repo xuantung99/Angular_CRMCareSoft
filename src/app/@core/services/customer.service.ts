@@ -10,7 +10,7 @@ export class CustomerService {
   private apiCreate = '/api/customer/AdminCustomer/CreateCustomer';
   private apiSearch = '/api/customer/FCCustomer/SearchCustomer';
   private apiCreateShippingAddress = '/api/customer/AdminCustomer/CreateShippingAddressByCustomer';
-  private apiCheckPointByPhone = 'api/customer/FCPoints/GetInforPointsByCustomer';
+  private apiCheckPointByPhone = 'api/customer/Points/GetInforPointsByCustomer';
 
 
   constructor(private api: ApiService) {

@@ -11,7 +11,7 @@ import {formatDate} from '@angular/common';
 export class OpportunityService {
   private getById = '/api/customer_support/Opportunity/byId';
   private getByCareSoftId = '/api/customer_support/Opportunity/byCareSoftId';
-  private getAllForMkt = '/api/customer_support/v2/Opportunity/allForMkt';
+  private getAllForMkt = '/api/customer_support/v2/FCOpportunity/allForMkt';
   private oppUrl = '/api/customer_support/Opportunity';
   private assignEmpsUrl = '/api/customer_support/OpportunityUser/changeMulti';
   private assignCustomerUrl = '/api/customer_support/opportunity/assigncustomer';
@@ -22,8 +22,7 @@ export class OpportunityService {
   private recoveryOpportunityUrl = '/api/customer_support/OpportunityUser/RecoveryOpportunity';
   private recoveryOpportunityByLeaderUrl = '/api/customer_support/OpportunityUser/RecoveryOpportunityByLeader';
 
-  constructor(private api: ApiService) {
-  }
+  constructor(private api: ApiService) {}
 
   public getOpportuntyById(id: number) {
     const response = new Subject<OpportunityModel>();

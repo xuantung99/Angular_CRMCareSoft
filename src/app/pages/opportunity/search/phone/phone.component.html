@@ -2,7 +2,6 @@
   <nb-card-header class="py-4">{{errorLog}}
   </nb-card-header>
 </nb-card>
-
 <ng-container *ngIf="!errorLog">
   <nb-card *ngIf="customer !== null && customer.customerId > 0">
     <nb-card-header>Thông tin cá nhân</nb-card-header>
@@ -41,7 +40,7 @@
             <label class="label col-sm-4 col-form-label">Số điểm hiện có</label>
             <div class="col-sm-8">
               {{point}}
-              <button *ngIf="point > 0" (click)="showPoint()" class="float-right" nbButton>Chi tiết</button>
+              <button *ngIf="point > 0" class="float-right" nbButton>Chi tiết</button>
             </div>
           </div>
         </div>
@@ -54,7 +53,6 @@
       </div>
     </nb-card-body>
   </nb-card>
-
   <nb-card>
     <nb-card-header>Lịch sử liên hệ</nb-card-header>
     <nb-card-body>
@@ -97,8 +95,7 @@
       </table>
     </nb-card-body>
   </nb-card>
-
-  <nb-card style="padding-bottom: 5px;">
+  <nb-card style="padding-bottom: 5px">
     <nb-card-header>Lich sử mua hàng</nb-card-header>
     <nb-card-body>
       <label class="label col-form-label">Danh sách đơn hàng</label>
@@ -111,6 +108,7 @@
           <th>Thời gian</th>
           <th>Số điện thoại</th>
           <th>Địa chỉ</th>
+          <th>Khuyến mại</th>
           <th>Tổng tiền</th>
         </tr>
         </thead>
@@ -122,7 +120,10 @@
           <td>{{order.OrderCreateDatetime | date:"dd-MM-yyyy hh:mm"}}</td>
           <td>{{showPhone(order.ShippingPhone1)}}</td>
           <td>{{order.ShippingAddressLine1}}</td>
-          <td>{{order.OrderValue}}</td>
+          <td>
+<!--            {{order.OrderDiscount.}}-->
+          </td>
+          <td>{{order.OrderValue}}đ</td>
         </tr>
         </tbody>
       </table>
@@ -145,7 +146,6 @@
       </table>
     </nb-card-body>
   </nb-card>
-
   <nb-accordion style="padding-bottom: 5px;">
     <nb-accordion-item>
       <nb-accordion-item-header>Địa chỉ nhận hàng</nb-accordion-item-header>
