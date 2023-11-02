@@ -77,7 +77,7 @@ export class InsertOppComponent implements OnDestroy {
     this.formError = false;
     if (this.fileList.length > 0) {
       this.checkUpdate = false;
-      this.api.post('/api/customer_support/Opportunity/insertMultiple', null, this.fileList)
+      this.api.post('/api/customer_support/FCOpportunity/insertMultiple', null, this.fileList)
         .subscribe(
           (res: any) => {
             if (res.statusCode === 200) {

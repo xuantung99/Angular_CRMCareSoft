@@ -9,18 +9,18 @@ import {formatDate} from '@angular/common';
 
 @Injectable({providedIn: 'root'})
 export class OpportunityService {
-  private getById = '/api/customer_support/Opportunity/byId';
-  private getByCareSoftId = '/api/customer_support/Opportunity/byCareSoftId';
+  private getById = '/api/customer_support/FCOpportunity/byId';
+  private getByCareSoftId = '/api/customer_support/FCOpportunity/byCareSoftId';
   private getAllForMkt = '/api/customer_support/v2/FCOpportunity/allForMkt';
-  private oppUrl = '/api/customer_support/Opportunity';
-  private assignEmpsUrl = '/api/customer_support/OpportunityUser/changeMulti';
-  private assignCustomerUrl = '/api/customer_support/opportunity/assigncustomer';
+  private oppUrl = '/api/customer_support/FCOpportunity';
+  private assignEmpsUrl = '/api/customer_support/FCOpportunityUser/changeMulti';
+  private assignCustomerUrl = '/api/customer_support/FCOpportunity/assigncustomer';
   private apiTicketClosedByEmp = '/api/customer_support/v2/Opportunity/ticketClosedByEmp';
   private apiCountbyStatus = '/api/customer_support/v2/Opportunity/countbyStatus';
   private apiTotalByProcessStatus = '/api/customer_support/v2/Opportunity/totalByProcessStatus';
   private apiticketClosedByEmpForSLorSM = '/api/customer_support/v2/Opportunity/ticketClosedByEmpForSLorSM';
-  private recoveryOpportunityUrl = '/api/customer_support/OpportunityUser/RecoveryOpportunity';
-  private recoveryOpportunityByLeaderUrl = '/api/customer_support/OpportunityUser/RecoveryOpportunityByLeader';
+  private recoveryOpportunityUrl = '/api/customer_support/FCOpportunityUser/RecoveryOpportunity';
+  private recoveryOpportunityByLeaderUrl = '/api/customer_support/FCOpportunityUser/RecoveryOpportunityByLeader';
 
   constructor(private api: ApiService) {}
 
@@ -419,7 +419,7 @@ export class OpportunityService {
 
   public GetOppWithCustomerandAsigner(oppIds: string) {
     return new Promise((resolve, reject) => {
-      this.api.get(`/api/customer_support/Opportunity/GetOppWithCustomerandAsigner?oppIds=${oppIds}`).subscribe((res: any) => {
+      this.api.get(`/api/customer_support/FCOpportunity/GetOppWithCustomerandAsigner?oppIds=${oppIds}`).subscribe((res: any) => {
         if (res.statusCode === 200 && res.data !== null) {
           resolve(res.data);
         } else {

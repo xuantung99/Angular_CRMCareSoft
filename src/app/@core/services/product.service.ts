@@ -9,13 +9,13 @@ import {HttpClient} from '@angular/common/http';
 export class ProductService {
   private getAllProductDetailsUrl = '/api/product/FcProduct/GetAllProductDetails';
   private getProductDetailByIdUrl = '/api/product/fcproduct/GetProductDetail';
-  private getAllUrl = '/api/customer_support/Product/All';
-  private getProductCourseUrl = 'api/customer_support/v2/ProductCourse/GetDefault';
-  private apiUpdatePriority = '/api/customer_support/Product/UpdatePriority';
+  private getAllUrl = '/api/customer_support/FCProduct/All';
+  private getProductCourseUrl = 'api/customer_support/v2/FCProductCourse/GetDefault';
+  private apiUpdatePriority = '/api/customer_support/FCProduct/UpdatePriority';
   private apiGetAllProductCourse = '/api/customer_support/v2/ProductCourse/GetAllProductCourse';
   private apiProductCourse = '/api/customer_support/v2/ProductCourse';
-  private apiProduct = '/api/customer_support/Product';
-  private apiSyncProduct = '/api/customer_support/Product/SyncProduct';
+  private apiProduct = '/api/customer_support/FCProduct';
+  private apiSyncProduct = '/api/customer_support/FCProduct/SyncProduct';
   private getListProductByMarketingUrl = '/api/customer_support/v2/Opportunity/GetListProductByMarketing';
 
   constructor(private api: ApiService, private http: HttpClient) {

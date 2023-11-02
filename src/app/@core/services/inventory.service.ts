@@ -3,7 +3,7 @@ import {Injectable} from '@angular/core';
 
 @Injectable({providedIn: 'root'})
 export class InventoryService {
-  private getAllUrl = '/api/inventory/admininventory/getAllInventory';
+  private getAllUrl = '/api/inventory/FCadmininventory/getAllInventory';
 
   constructor(private api: ApiService) {
   }

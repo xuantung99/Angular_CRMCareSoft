@@ -126,13 +126,13 @@ export class OpportunityComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.api.get('/api/customer_support/OpportunitySource/all', {take: 1000}).subscribe(
+    this.api.get('/api/customer_support/FCOpportunitySource/all', {take: 1000}).subscribe(
       (res: any) => {
         this.oppSource = res.data;
       },
     );
 
-    this.api.get('/api/customer_support/OpportunityStatus/all', {take: 1000}).subscribe(
+    this.api.get('/api/customer_support/FCOpportunityStatus/all', {take: 1000}).subscribe(
       (res: any) => {
         this.oppStatus = res.data;
       },
@@ -211,7 +211,7 @@ export class OpportunityComponent implements OnInit, OnDestroy {
     }
 
     this.sourceData = new ServerDataSource(this.http, {
-      endPoint: `/api/customer_support/Opportunity/all${qParams}`,
+      endPoint: `/api/customer_support/FCOpportunity/all${qParams}`,
       dataKey: 'data',
       pagerLimitKey: 'limit',
       pagerPageKey: 'page',

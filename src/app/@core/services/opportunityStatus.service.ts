@@ -4,8 +4,8 @@ import {OpportunityStatusModel} from '../../model/opportunityStatus.model';
 
 @Injectable({providedIn: 'root'})
 export class OpportunityStatusService {
-  private getAllUrl = '/api/customer_support/OpportunityStatus/all';
-  private oppStatusUrl = '/api/customer_support/OpportunityStatus';
+  private getAllUrl = '/api/customer_support/FCOpportunityStatus/all';
+  private oppStatusUrl = '/api/customer_support/FCOpportunityStatus';
 
   constructor(private api: ApiService) {
   }

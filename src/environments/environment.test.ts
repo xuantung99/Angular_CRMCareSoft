@@ -6,7 +6,7 @@
 export const environment = {
   production: true,
   webAdminURL: 'http://192.168.100.99:5607',
-  baseUrl: '/CRM_CareSoft/',
+  baseUrl: '/CareSoftAppView/',
   apiUrl: 'http://192.168.100.99:5607/',
   productImgUrl: 'https://static-prod.5nhatnhat.com',
   defaultLanguage: 'vi',

@@ -3,9 +3,9 @@ import {Injectable} from '@angular/core';
 
 @Injectable({providedIn: 'root'})
 export class OtherService {
-  private shipFeeUrl = '/api/shipment/AdminShip/CalculateShipFee';
+  private shipFeeUrl = '/api/shipment/FCAdminShip/CalculateShipFee';
   private shipmentFeeUrl = '/api/shipment/FcShipment/CalculatorShipmentFee';
-  private getAllShipmentVendorUrl = '/api/shipment/AdminShipmentVendor/GetShipmentVendors';
+  private getAllShipmentVendorUrl = '/api/shipment/FCAdminShipmentVendor/GetShipmentVendors';
   private getKeyProdUrl = '/api/customer_support/FCKeyProdContent/byApproved';
   private getListPaymentTransUrl = '/api/finance/v2/AdminBankTransferTransaction/ListAllBankTransferTransaction';
   private mapPaymentTransUrl = '/api/finance/v2/AdminBankTransferTransaction/UpdateReferenceCodeForBankTransfer';

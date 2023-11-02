@@ -5,8 +5,8 @@ import {OpportunityLogModel} from '../../model/opportunityLog.model';
 
 @Injectable({providedIn: 'root'})
 export class OpportunityLogService {
-  private opportunityLogUrl = '/api/customer_support/OpportunityLog';
-  private apiGetLogByOppId = '/api/customer_support/OpportunityLog/byOppId';
+  private opportunityLogUrl = '/api/customer_support/FCOpportunityLog';
+  private apiGetLogByOppId = '/api/customer_support/FCOpportunityLog/byOppId';
 
   constructor(private api: ApiService, private http: HttpClient) {
   }

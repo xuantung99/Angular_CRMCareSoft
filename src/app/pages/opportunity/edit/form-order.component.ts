@@ -866,8 +866,11 @@ export class FormOrderComponent implements OnInit, OnDestroy {
     this.promotionService.CheckPromotionCombo(this.product.Id).then((data: any) => {
       if ((data.promotionId ?? 0) !== 0) {
         this.HasPromotion = 1;
-        this.dataCombo[0].promotionOriginId = data.promotionId;
-        this.dataCombo[0].promotionOriginName = data.promotionName;
+        // this.dataCombo[0].promotionOriginId = data.promotionId;
+        // this.dataCombo[0].promotionOriginName = data.promotionName;
+        let indexCombo = this.dataCombo.findIndex(x => x.promotionId == this.product.Id);
+        this.dataCombo[indexCombo].promotionOriginId = data.promotionId;
+        this.dataCombo[indexCombo].promotionOriginName = data.promotionName;
       }
     });
 

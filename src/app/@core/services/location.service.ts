@@ -4,9 +4,9 @@ import {ApiService} from './api.service';
 @Injectable({providedIn: 'root'})
 
 export class LocationService {
-  private apiAllProvince = '/api/shipment/AdminShip/GetAllProvince';
-  private apiAllDistrict = '/api/shipment/AdminShip/GetAllDistrict';
-  private apiAllSubDistrict = '/api/shipment/AdminShip/GetAllSubDistrict';
+  private apiAllProvince = '/api/shipment/FCAdminShip/GetAllProvince';
+  private apiAllDistrict = '/api/shipment/FCAdminShip/GetAllDistrict';
+  private apiAllSubDistrict = '/api/shipment/FCAdminShip/GetAllSubDistrict';
   private reloadData = false;
   constructor(private api: ApiService) {
     if (this.reloadData === true) {
