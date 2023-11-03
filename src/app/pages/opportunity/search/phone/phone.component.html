@@ -120,9 +120,7 @@
           <td>{{order.OrderCreateDatetime | date:"dd-MM-yyyy hh:mm"}}</td>
           <td>{{showPhone(order.ShippingPhone1)}}</td>
           <td>{{order.ShippingAddressLine1}}</td>
-          <td>
-<!--            {{order.OrderDiscount.}}-->
-          </td>
+          <td><p *ngFor="let discount of order.OrderDiscounts">{{discount.DiscountName}}</td>
           <td>{{order.OrderValue}}đ</td>
         </tr>
         </tbody>

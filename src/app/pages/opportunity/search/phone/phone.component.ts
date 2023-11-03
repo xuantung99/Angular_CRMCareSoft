@@ -24,6 +24,7 @@ export class PhoneComponent implements OnInit {
   dataOrder: Array<any> = [];
   dataProduct: Array<any> = [];
   errorLog: string = '';
+  discountText: string = "";
 
   constructor(
     public route: ActivatedRoute,
@@ -47,10 +48,11 @@ export class PhoneComponent implements OnInit {
           this.customer = data[0];
           this.checkPoint('', this.customer.customerId);
           this.getListOpp(this.customer.phone);
-          this.orderService.getOrderInfosByCustomer(this.customer.customerId).subscribe(dataOrderData => { this.dataOrder = dataOrderData});
+          this.orderService.getOrderInfosByCustomer(this.customer.customerId).subscribe(data => { this.dataOrder = data;
+            console.log(data);
+          });
           this.orderService.getOrderItemsByCustomer(this.customer.customerId, 0, 50).subscribe(dataProductData => {
               this.dataProduct = dataProductData;
-            console.log(this.dataProduct);
           })}
       })
   }
@@ -107,3 +109,5 @@ export class PhoneComponent implements OnInit {
     }
   }
 }
+
+// <td><p *ngFor="let discount of order.OrderDiscounts">{{discount.DiscountName}}</td
