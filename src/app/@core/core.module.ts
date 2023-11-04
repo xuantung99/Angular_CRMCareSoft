@@ -4,18 +4,20 @@ import { NbAuthModule, NbPasswordAuthStrategy, NbAuthJWTToken } from '@nebular/a
 import { NbSecurityModule, NbRoleProvider } from '@nebular/security';
 import { of as observableOf } from 'rxjs';
 import {HttpErrorResponse} from '@angular/common/http';
-
 import { throwIfAlreadyLoaded } from './module-import-guard';
 import {
   LayoutService,
   StateService,
 } from './utils';
-
+import {PreviousRouteService} from './services/previousRouteService';
 export class NbSimpleRoleProvider extends NbRoleProvider {
   getRole() {
     return observableOf('guest');
   }
 }
+
+const previousRouteSetvice = new PreviousRouteService();
+previousRouteSetvice.getPreviousUrl()
 
 export function jwtGetter(module, res, options) {
   if (res.body.responseCode !== '00') {
@@ -57,9 +59,8 @@ export const NB_CORE_PROVIDERS = [
           redirect: {
             success: '/auth/login',
             failure: '/',
-          },
-        },
-      }),
+          }}
+      })
     ],
   }).providers,
 
@@ -100,8 +101,7 @@ export class CoreModule {
     return {
       ngModule: CoreModule,
       providers: [
-        ...NB_CORE_PROVIDERS,
+        ...NB_CORE_PROVIDERS
       ],
-    };
-  }
+    }}
 }

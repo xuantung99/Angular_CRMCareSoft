@@ -81,7 +81,7 @@
           <td>{{opp.description}}</td>
           <td>
             <div *ngIf="opp.items.length > 0" class="mat-chip">
-              <div *ngFor="let po of opp.items">{{po.productName}} </div>
+              <div *ngFor="let item of opp.items">{{item.productName}} </div>
             </div>
           </td>
           <td>{{opp.createdOn | date:"dd-MM-yyyy hh:mm"}}</td>

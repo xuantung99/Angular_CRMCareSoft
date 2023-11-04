@@ -1,10 +1,7 @@
 // khai báo các function mặc định , setting của table,.....
 
 import { formatDate } from "@angular/common";
-import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { ServerDataSource } from "ng2-smart-table";
-import { ExtraParam } from "../../model/extraParam.model";
 import { AOppViewComponent } from "../../pages/aOppView.component";
 import { ShowDescriptionComponent } from "../../pages/showDescription.component";
 import { TreeNode } from "./app.constants";
@@ -330,8 +327,7 @@ export class Globals {
     return result;
   }
   public dataTree: TreeNode<FSEntry>[];
-  public prepareDataTreeView (arrOppIds: any,data: any)
-  {
+  public prepareDataTreeView (arrOppIds: any,data: any) {
     this.dataTree = [];
     arrOppIds.forEach(oppId => {
         var lstChilds = [];

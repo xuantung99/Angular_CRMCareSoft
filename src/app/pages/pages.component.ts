@@ -31,7 +31,6 @@ export class PagesComponent {
   toggleSidebar(): boolean {
     this.sidebarService.toggle(true, 'menu-sidebar');
     this.layoutService.changeLayoutSize();
-
     return false;
   }
   CheckLocalStorage() {

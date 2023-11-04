@@ -25,10 +25,6 @@ export class ShowPromotionComponent implements OnDestroy {
   conditionProducts: any = [];
   conditionData: any = [];
   dataContext: any;
-  conditionObjects: any = [
-    {check: false, Name: 'Đã có đơn hàng', value: 1},
-    {check: false, Name: 'Tổng giá trị đơn hàng', value: 2, total: 0},
-  ];
   statusCardsByThemes: {
     default: CardSettings[];
     cosmic: CardSettings[];

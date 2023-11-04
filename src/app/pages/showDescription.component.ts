@@ -1,15 +1,12 @@
 import {Component, Input} from '@angular/core';
 import {Router} from '@angular/router';
-import {ViewCell} from 'ng2-smart-table';
 
 @Component({
   selector: 'ngx-show-description',
-  template: `
-    <div class="description-wrap" [innerHTML]="showD(value)"></div>
-  `,
+  template: `<div class="description-wrap" [innerHTML]="showD(value)"></div>`,
 })
 
-export class ShowDescriptionComponent implements ViewCell {
+export class ShowDescriptionComponent {
   @Input() value: string | number;
   @Input() rowData: any;
   constructor(private router: Router) {}

@@ -7,16 +7,14 @@ import { GroupBusinessModel } from '../../model/groupBusiness.model';
 export class GroupBusinessService {
   private groupBusinessUrl = '/api/customer_support/GroupBusiness';
 
-  constructor(private api: ApiService) {
-  }
+  constructor(private api: ApiService) {}
 
   public getAllGroupBusniess(qParams: string = '?groupId=-1') {
     const response = new Subject<GroupBusinessModel[]>();
     this.api.get(this.groupBusinessUrl + '/all'+ `${qParams}`).subscribe((res: any) => {
       if (res.statusCode === 200 && res.data !== null) {
         response.next(res.data);
-      }
-    });
+      }});
     return response.asObservable();
   }
 

@@ -59,8 +59,7 @@
               <div class="col-sm-8">
                 <input [(ngModel)]="shipminetFullname" [ngModelOptions]="{standalone: true}" nbInput type="text"
                        fullWidth/>
-                <div class="form-error" *ngIf="formError.shipminetFullname == true">Bạn hãy nhập họ tên người nhận
-                  hàng
+                <div class="form-error" *ngIf="formError.shipminetFullname == true">Bạn hãy nhập họ tên người nhận hàng
                 </div>
               </div>
             </div>
@@ -69,8 +68,7 @@
             <div class="form-group row">
               <label class="label col-sm-4 col-form-label">Số điện thoại *</label>
               <div class="col-sm-8">
-                <input [(ngModel)]="shipminetPhone" [ngModelOptions]="{standalone: true}" nbInput type="text"
-                       fullWidth/>
+                <input [(ngModel)]="shipminetPhone" [ngModelOptions]="{standalone: true}" nbInput type="text" fullWidth/>
                 <div class="form-error" *ngIf="formError.shipminetPhone == true">Bạn hãy số điện thoại người nhận hàng
                 </div>
               </div>
@@ -101,9 +99,7 @@
         <div class="form-group row">
           <label class="label col-sm-2 col-form-label"></label>
           <div class="col-sm-10">
-            <textarea rows="5" name="shipAddressLine1" [(ngModel)]="shipAddressLine1"
-                      [ngModelOptions]="{standalone: true}" nbInput fullWidth
-                      placeholder="Địa chỉ nhận hàng"></textarea>
+            <textarea rows="5" name="shipAddressLine1" [(ngModel)]="shipAddressLine1" [ngModelOptions]="{standalone: true}" nbInput fullWidth placeholder="Địa chỉ nhận hàng"></textarea>
             <div class="form-error" *ngIf="formError.shipAddressLine1 == true">Bạn hãy nhập địa chỉ nhận hàng</div>
           </div>
         </div>
@@ -122,14 +118,10 @@
           <div class="row">
             <div class="col-sm-2">Tìm kiếm sản phẩm</div>
             <div class="col-sm-6">
-              <ng-select [items]="dataPC" [(ngModel)]="productId" (change)="selectProduct($event)" bindValue="Id"
-                         bindLabel="Name" placeholder="Chọn sản phẩm">
-              </ng-select>
+              <ng-select [items]="dataPC" [(ngModel)]="productId" (change)="selectProduct($event)" bindValue="Id" bindLabel="Name" placeholder="Chọn sản phẩm"></ng-select>
             </div>
             <div class="buttons-row col-sm-4">
-              <button (click)="addProductToOrder()" type="button" nbButton status="info">Thêm
-                SP
-              </button>
+              <button (click)="addProductToOrder()" type="button" nbButton status="info">Thêm SP</button>
             </div>
           </div>
           <div class="form-error" *ngIf="formError.order_product == true">Bạn hãy chọn sản phẩm</div>
@@ -158,8 +150,7 @@
                       <input type="radio" name="color" value="no" (click)="updatePromotion(product, 0)"> Không áp dụng
                     </label>
                     <label *ngFor="let promotion of product.promotion">
-                      <input type="radio" name="color" [value]="promotion"
-                             (click)="updatePromotion(product, promotion)"> {{promotion.promotionName}}
+                      <input type="radio" name="color" [value]="promotion" (click)="updatePromotion(product, promotion)"> {{promotion.promotionName}}
                     </label>
                   </div>
                 </td>

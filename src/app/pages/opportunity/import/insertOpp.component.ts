@@ -4,19 +4,16 @@ import {takeWhile} from 'rxjs/operators';
 import * as XLSX from 'xlsx';
 import {ApiService} from '../../../@core/services/api.service';
 import {NotiService} from '../../../@core/services/noti.service';
-
 interface CardSettings {
   title: string;
   iconClass: string;
   type: string;
 }
-
 @Component({
   selector: 'ngx-insert-opp',
   styleUrls: ['./../opportunity.component.scss'],
   templateUrl: './insertOpp.component.html',
 })
-
 export class InsertOppComponent implements OnDestroy {
   private alive = true;
   commonStatusCardsSet: CardSettings[] = [];
@@ -49,11 +46,9 @@ export class InsertOppComponent implements OnDestroy {
         this.statusCards = this.statusCardsByThemes[theme.name];
       });
   }
-
   ngOnDestroy() {
     this.alive = false;
   }
-
   addfile(event) {
     this.formError = false;
     this.file = event.target.files[0];

@@ -1,5 +1,5 @@
-import { ExtraOptions, RouterModule, Routes } from '@angular/router';
-import { NgModule } from '@angular/core';
+import {ExtraOptions, RouterModule, Routes} from '@angular/router';
+import {NgModule} from '@angular/core';
 import {
   NbAuthComponent,
   NbLoginComponent,
@@ -8,7 +8,6 @@ import {
   NbRequestPasswordComponent,
   NbResetPasswordComponent,
 } from '@nebular/auth';
-
 import {AuthGuard} from './auth-guard.service';
 
 export const routes: Routes = [
@@ -44,9 +43,8 @@ export const routes: Routes = [
     loadChildren: () => import('app/pages/pages.module')
       .then(m => m.PagesModule),
   },
-  { path: '**', redirectTo: '/dashboard' },
+  {path: '**', redirectTo: '/dashboard'},
 ];
-
 const config: ExtraOptions = {
   useHash: false,
 };
@@ -55,4 +53,5 @@ const config: ExtraOptions = {
   imports: [RouterModule.forRoot(routes, config)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule {
+}

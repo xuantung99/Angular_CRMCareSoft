@@ -1,14 +1,8 @@
-/**
- * @license
- * Copyright Akveo. All Rights Reserved.
- * Licensed under the MIT License. See License.txt in the project root for license information.
- */
 import {Component} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {NbMenuService, NbIconLibraries} from '@nebular/theme';
 import {NbAuthJWTToken, NbAuthService} from '@nebular/auth';
 import {AppConstants} from './@core/utils/app.constants';
-
 @Component({
   selector: 'ngx-app',
   template: '<router-outlet></router-outlet>',
@@ -22,13 +16,8 @@ export class AppComponent {
     private iconLibraries: NbIconLibraries,
   ) {
     this.iconLibraries.registerFontPack('font-awesome', {packClass: 'fa', iconClassPrefix: 'fa'});
-    this.menuService.onItemClick()
-      .subscribe((event) => {
-        this.onContextItemSelection(event.item.title);
-      });
-    this.authService.onTokenChange()
-      .subscribe((token: NbAuthJWTToken) => {
-      });
+    this.menuService.onItemClick().subscribe((event) => {this.onContextItemSelection(event.item.title)});
+    this.authService.onTokenChange().subscribe((token: NbAuthJWTToken) => {});
   }
   onContextItemSelection(title) {
     if (title === 'Log out') {

@@ -22,7 +22,6 @@ export class PromotionComponent implements OnDestroy {
   public promotionServiceId = 0;
   public promotionDiscountId = 0;
   public promotionGiveId = 0;
-  dataPromotions: any = [];
   lstPromotionService : any=[];
   lstPromotionDiscount : any=[];
   lstPromotionGive : any=[];
@@ -69,21 +68,17 @@ export class PromotionComponent implements OnDestroy {
       }
     }
   }
-
   cancel() {
     this.windowRef.close();
   }
-
   submit() {
     this.windowRef.config.context = {
       promotionServiceId: this.promotionServiceId,
       promotionDiscountId: this.promotionDiscountId,
       promotionGiveId: this.promotionGiveId,
-
     };
     this.windowRef.close();
   }
-
   ngOnDestroy() {
     this.alive = false;
   }

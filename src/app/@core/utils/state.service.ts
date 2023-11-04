@@ -1,12 +1,10 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { of as observableOf,  Observable,  BehaviorSubject } from 'rxjs';
 import { takeWhile } from 'rxjs/operators';
-
 import { NbLayoutDirectionService, NbLayoutDirection } from '@nebular/theme';
 
 @Injectable()
 export class StateService implements OnDestroy {
-
   protected layouts: any = [
     {
       name: 'One Column',
@@ -39,17 +37,12 @@ export class StateService implements OnDestroy {
       id: 'end',
     },
   ];
-
   protected layoutState$ = new BehaviorSubject(this.layouts[0]);
   protected sidebarState$ = new BehaviorSubject(this.sidebars[0]);
-
   alive = true;
 
   constructor(directionService: NbLayoutDirectionService) {
-    directionService.onDirectionChange()
-      .pipe(takeWhile(() => this.alive))
-      .subscribe(direction => this.updateSidebarIcons(direction));
-
+    directionService.onDirectionChange().pipe(takeWhile(() => this.alive)).subscribe(direction => this.updateSidebarIcons(direction));
     this.updateSidebarIcons(directionService.getDirection());
   }
 

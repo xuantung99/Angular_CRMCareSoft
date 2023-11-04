@@ -1,8 +1,6 @@
 import {ProductService} from '../../../@core/services/product.service';
-import {Component, EventEmitter, Inject, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {NbTabComponent, NbTabsetComponent, NbThemeService, NbWindowRef, NbWindowService} from '@nebular/theme';
-import {debounceTime, distinctUntilChanged, switchMap, takeWhile, tap} from 'rxjs/operators';
 import {NotiService} from '../../../@core/services/noti.service';
 import {NbAuthJWTToken, NbAuthService} from '@nebular/auth';
 import {PromotionComponent} from '../promotion/promotion.component';
@@ -22,6 +20,8 @@ import {OpportunitySourceModel} from '../../../model/opportunitySource.model';
 import {OpportunityStatusModel} from '../../../model/opportunityStatus.model';
 import {OpportunityLogService} from '../../../@core/services/opportunityLog.service';
 import {OpportunityLogModel} from '../../../model/opportunityLog.model';
+import {Component, EventEmitter, Inject, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {debounceTime, distinctUntilChanged, switchMap, takeWhile, tap} from 'rxjs/operators';
 
 interface CardSettings {
   title: string;
@@ -46,12 +46,12 @@ export class FormOrderComponent implements OnInit, OnDestroy {
   // variable
   statusCards: string;
   popup: boolean = false;
-  paidStatus = false;
+  paidStatus: boolean = false;
   shipSubDistrictCode: string;
-  point = 0;
-  totalPoint = 0;
-  coefficientPoint = 10000;
-  conditionPoint = AppConstants.conditionPoint;
+  point: number = 0;
+  totalPoint: number = 0;
+  coefficientPoint: number = 10000;
+  conditionPoint: number = AppConstants.conditionPoint;
   provinceCode: string;
   provinceName: string;
   districtCode: string;
@@ -67,46 +67,46 @@ export class FormOrderComponent implements OnInit, OnDestroy {
   customerFullname: string;
   customerEmail: string;
   customerPhone: string;
-  totalAmount = 0;
-  totaDiscount = 0;
-  promotionId = 0;
+  totalAmount: number = 0;
+  totaDiscount: number = 0;
+  promotionId: number = 0;
   discountCode: '';
-  discountCodeE = 'Bạn hãy nhập mã khuyến mại';
-  promotionCode = '';
-  checkCreateOrder = 1;
-  description = '';
+  discountCodeE: string = 'Bạn hãy nhập mã khuyến mại';
+  promotionCode: string = '';
+  checkCreateOrder: number = 1;
+  description: string = '';
   useOfDay: number = 0;
-  peopleLoading = false;
-  keywordLoading = false;
+  peopleLoading: boolean = false;
+  keywordLoading: boolean = false;
   oppProvinceName: string = '';
   oppDistrictName: string = '';
   oppSubDistrictName: string = '';
-  totalDiscounts = 0;
-  createdSource = 'backend';
-  typeShip = 1;
-  Comment = '';
+  totalDiscounts: number = 0;
+  createdSource: string = 'backend';
+  typeShip: number = 1;
+  Comment: string = '';
   loading: boolean = false;
-  private alive = true;
-  applyWithCombo = false;
-  HasPromotion = 0;
+  private alive: boolean = true;
+  applyWithCombo: boolean = false;
+  HasPromotion: number = 0;
   commonStatusCardsSet: CardSettings[] = [];
   listOpps: OpportunityModel[] = [];
   listPromotions = [];
   itemsPoint = [{id: 0, name: 'không sử dụng điểm'}];
-  shipMents = [];
-  dataShipments = [];
-  products: any = [];
-  dataP = [];
-  dataPC = [];
-  dataCombo = [];
-  dataProduct = [];
+  shipMents: Array<any> = [];
+  dataShipments: Array<any> = [];
+  products: Array<any> = [];
+  dataP: Array<any> = [];
+  dataPC: Array<any> = [];
+  dataCombo: Array<any> = [];
+  dataProduct: Array<any> = [];
   promotions: any = [];
-  discountProduct: any = [];
+  discountProduct: Array<any> = [];
   resultCalls = AppConstants.resultCalls;
-  keywords: any = [];
-  oppOrders = [];
-  oppProducts = [];
-  dataOrder = [];
+  keywords: Array<any> = [];
+  oppOrders: Array<any> = [];
+  oppProducts: Array<any> = [];
+  dataOrder: Array<any> = [];
   dataLogs: OpportunityLogModel[] = [];
   dataLogDetails: OpportunityLogModel[] = [];
   dataLogOpp: OpportunityLogModel[] = [];
@@ -114,7 +114,7 @@ export class FormOrderComponent implements OnInit, OnDestroy {
   listOrderStatus: any = AppConstants.orderStatus;
   listProcessStatus: any = AppConstants.processStatus;
   listSource: any = AppConstants.createdSourceOrder;
-  oppStatus = [];
+  oppStatus: Array<any> = [];
   shippingTypes: any = [
     {value: 1, name: 'Tính phí vận chuyển'},
     {value: 0, name: 'Nhận hàng tại kho không tính phí'},
@@ -122,7 +122,7 @@ export class FormOrderComponent implements OnInit, OnDestroy {
   ];
   works: any = [];
   tags: any = [];
-  dataSourceContent = [];
+  dataSourceContent: Array<any> = [];
   promotionSelected: any = [];
   // object
   formError: any = {};
@@ -139,7 +139,6 @@ export class FormOrderComponent implements OnInit, OnDestroy {
     corporate: this.commonStatusCardsSet,
     dark: this.commonStatusCardsSet,
   };
-  // any
   user: any;
   inventories: any;
   productInfo: any = null;
@@ -179,20 +178,18 @@ export class FormOrderComponent implements OnInit, OnDestroy {
     private authService: NbAuthService,
     @Inject(ActivatedRoute) private routeA: ActivatedRoute, private noti: NotiService) {
     this.route.queryParams.subscribe(params => {
+      console.log(params);
       this.oppIdInput = params['ticket_id'];
-      console.log(this.oppIdInput)
+      // console.log(this.oppIdInput);
     });
-    this.themeService.getJsTheme()
-      .pipe(takeWhile(() => this.alive))
-      .subscribe(theme => {
-        this.statusCards = this.statusCardsByThemes[theme.name];
-      });
-
-    this.authService.onTokenChange()
-      .subscribe((token: NbAuthJWTToken) => {
-        if (token.isValid()) {
-          this.user = token.getPayload();
-        }});
+    this.themeService.getJsTheme().pipe(takeWhile(() => this.alive)).subscribe(theme => {
+      this.statusCards = this.statusCardsByThemes[theme.name];
+    });
+    this.authService.onTokenChange().subscribe((token: NbAuthJWTToken) => {
+      if (token.isValid()) {
+        this.user = token.getPayload();
+      }
+    });
     this.locationService.getAllProvince().then(data => this.provinces = data);
   }
 
@@ -200,7 +197,6 @@ export class FormOrderComponent implements OnInit, OnDestroy {
     this.formError.noCustomer = false;
     this.loadPeople();
     this.loadKeyword();
-
     this.otherService.getAllShipmentVendor().then((data: any) => {
       this.shipmentList = data;
       this.shipmentVendor = data.find(x => x.shipmentVendorId === 5);
@@ -210,11 +206,8 @@ export class FormOrderComponent implements OnInit, OnDestroy {
       this.productService.getAllProductInCustomers().then((dataC: any) => {
         this.dataPC = data;
         for (const p of dataC) {
-          if (p.type === 2) {
-            this.dataPC.push({Id: p.id, type: p.type, Name: p.productName, contents: JSON.parse(p.contents)});
-          }
-        }
-      });
+          if (p.type === 2) this.dataPC.push({Id: p.id, type: p.type, Name: p.productName, contents: JSON.parse(p.contents)});
+        }});
     });
     this.opportunitySourceService.getAll(1000).then((data: OpportunitySourceModel[]) => {
       this.oppSource = data;
@@ -229,8 +222,7 @@ export class FormOrderComponent implements OnInit, OnDestroy {
       this.opp.id = parseInt(this.oppIdInput, 0);
       this.getOppDetail(this.oppIdInput);
       this.popup = true;
-    }
-    else {
+    } else {
       this.routeA.params.subscribe(params => {
         // console.log(params);
         this.opp.id = params['ticket_id'] === undefined ? 0 : Number(params['ticket_id']);
@@ -245,7 +237,6 @@ export class FormOrderComponent implements OnInit, OnDestroy {
     });
   }
 
-  // load, get data,start
   loadPeople() {
     this.peopleInput$.pipe(
       debounceTime(200),
@@ -280,7 +271,7 @@ export class FormOrderComponent implements OnInit, OnDestroy {
     // console.log(oppId);
     this.opportunityService.getOpportuntyCareSoftById(oppId).subscribe(
       data => {
-        console.log(data);
+        // console.log(data);
         this.IdChecked = true;
         this.opp = data;
         this.opp.source = Number(this.opp.source);
@@ -569,7 +560,6 @@ export class FormOrderComponent implements OnInit, OnDestroy {
         } else {
           this.subDistrictCode = null;
         }
-
         if (check === 1) {
           const sdt = this.subDistricts.find(x => x.wardId === this.subDistrictCode);
           this.changeSubDistrict(sdt);
@@ -590,17 +580,14 @@ export class FormOrderComponent implements OnInit, OnDestroy {
       this.formError.provinceCode = true;
       val = false;
     }
-
     if (this.districtCode === undefined || this.districtCode === null) {
       this.formError.districtCode = true;
       val = false;
     }
-
     if (this.products.length < 1 && this.dataCombo.length < 1) {
       this.noti.error('Chưa có sản phẩm');
       val = false;
     }
-
     if (val) {
       if (Number(this.typeShip) > 0) {
         this.loading = true;
@@ -646,7 +633,6 @@ export class FormOrderComponent implements OnInit, OnDestroy {
       this.formError.customerFullname = true;
       check = false;
     }
-
     if (this.customerPhone === null || this.customerPhone === undefined) {
       this.formError.customerPhone = true;
       check = false;
@@ -659,32 +645,26 @@ export class FormOrderComponent implements OnInit, OnDestroy {
       this.formError.shipminetFullname = true;
       check = false;
     }
-
     if (this.shipminetPhone === '' || this.shipminetPhone === undefined) {
       this.formError.shipminetPhone = true;
       check = false;
     }
-
     if (this.provinceCode === null || this.provinceCode === undefined) {
       this.formError.provinceCode = true;
       check = false;
     }
-
     if (this.districtCode === null || this.districtCode === undefined) {
       this.formError.districtCode = true;
       check = false;
     }
-
     if (this.subDistrictCode === null || this.subDistrictCode === undefined) {
       this.formError.subDistrictCode = true;
       check = false;
     }
-
     if (this.shipAddressLine1 === '' || this.shipAddressLine1 === null || this.shipAddressLine1 === undefined) {
       this.formError.shipAddressLine1 = true;
       check = false;
     }
-
     if (this.products.length > 0 || this.dataCombo.length > 0) {
       if (this.products.length > 0) {
         for (const pr of this.products) {
@@ -698,7 +678,6 @@ export class FormOrderComponent implements OnInit, OnDestroy {
       this.formError.order_product = true;
       check = false;
     }
-
     if (check) {
       this.createCustomer();
     } else {
@@ -822,13 +801,11 @@ export class FormOrderComponent implements OnInit, OnDestroy {
     for (const product of this.products) {
       total += product.quantity * product.salePrice;
     }
-
     for (const dcb of this.dataCombo) {
       for (const product of dcb.promotionItems) {
         total += product.quantity * product.salePrice;
       }
     }
-
     const dataPro = [];
     for (const pro of this.product.contents) {
       const p = this.dataP.find(x => x.Id === pro.id);
@@ -861,7 +838,6 @@ export class FormOrderComponent implements OnInit, OnDestroy {
       // Chỉ đẩy sản phẩm chính lên check
       this.getPromotionByProduct(dataPro[0].itemId, parseInt(dataPro[0].quantity, 10));
     }
-
     // kiểm tra combo có phải là cấu hình cho chương trình khuyến mãi không
     this.promotionService.CheckPromotionCombo(this.product.Id).then((data: any) => {
       if ((data.promotionId ?? 0) !== 0) {
@@ -873,7 +849,6 @@ export class FormOrderComponent implements OnInit, OnDestroy {
         this.dataCombo[indexCombo].promotionOriginName = data.promotionName;
       }
     });
-
     this.totalAmount = total;
     this.productId = null;
     this.getDayofUse();
@@ -961,12 +936,10 @@ export class FormOrderComponent implements OnInit, OnDestroy {
       if (data.length > 0) {
         this.products[index - 1].promotion = data;
       }
-
       let total = 0;
       for (const product of this.products) {
         total += product.quantity * product.salePrice;
       }
-
       for (const dcb of this.dataCombo) {
         for (const product of dcb.promotionItems) {
           total += Number(product.quantity) * Number(product.salePrice);
@@ -997,11 +970,9 @@ export class FormOrderComponent implements OnInit, OnDestroy {
                 }
               }
             }
-
             if (this.shipment !== null && element.typeId === 1) {
               tP = (Number(this.shipment.fee) >= tP) ? tP : Number(this.shipment.fee);
             }
-
             this.totaDiscount += Number(tP);
           } else {
             let pr = 0;
@@ -1013,7 +984,6 @@ export class FormOrderComponent implements OnInit, OnDestroy {
                 quantity = rw.Quantity;
               }
             }
-
             if (pr > 0) {
               const pDetail = this.dataP.find(x => x.Id === pr);
               if (pDetail) {
@@ -1032,7 +1002,6 @@ export class FormOrderComponent implements OnInit, OnDestroy {
           }
         }
       });
-
     }
   }
 
@@ -1079,7 +1048,6 @@ export class FormOrderComponent implements OnInit, OnDestroy {
         } else
           dataL.push(pro);
       });
-
     }
     // nếu vừa là combo vừa là khuyến mãi thì vẫn thêm sản phẩm khuyến mãi ở đây
     if (this.dataCombo.length > 0) {
@@ -1096,7 +1064,6 @@ export class FormOrderComponent implements OnInit, OnDestroy {
               dataL.push(pro);
             }
           }
-
         } else {
           for (const pro of dcb.promotionItems) {
             if (pro.free !== true) {
@@ -1104,7 +1071,6 @@ export class FormOrderComponent implements OnInit, OnDestroy {
             }
           }
         }
-
       }
     }
     // khuyến mãi tặng sản phẩm trên tổng đơn hàng
@@ -1117,7 +1083,6 @@ export class FormOrderComponent implements OnInit, OnDestroy {
       }
     }
     return dataL;
-
   }
 
   changePromotion() {
@@ -1135,7 +1100,6 @@ export class FormOrderComponent implements OnInit, OnDestroy {
           promotionGiveId = element.id;
       });
     }
-
     this.wRef = this.windowService.open(
       PromotionComponent,
       {
@@ -1148,7 +1112,6 @@ export class FormOrderComponent implements OnInit, OnDestroy {
         },
       },
     );
-
     this.wRef.onClose.subscribe((res) => {
       this.promotionSelected = [];
       const conf: any = this.wRef.config.context;
@@ -1161,12 +1124,10 @@ export class FormOrderComponent implements OnInit, OnDestroy {
           this.promotionSelected.push(prm);
         if (conf.promotionGiveId === prm.id)
           this.promotionSelected.push(prm);
-
         if (this.promotionId === prm.id) {
           this.promotion = prm;
         }
       }
-
       this.showPromotion();
     });
   }
@@ -1187,13 +1148,11 @@ export class FormOrderComponent implements OnInit, OnDestroy {
       if (this.shippingAddressId <= 0) {
         this.createShipment();
       }
-
       const now = new Date();
       const dataOrder: any = {};
       if (this.opp.id !== 0) {
         dataOrder.opportunityId = this.opp.id;
       }
-
       const code = now.toLocaleDateString('en-GB').toString().split('/');
       code[2] = code[2].substr(-2, 2);
       const codeO = code[2] + code[1] + code[0] + '-1' + now.getTime().toString().substr(-4, 4);
@@ -1230,7 +1189,6 @@ export class FormOrderComponent implements OnInit, OnDestroy {
         price: this.shipment.fee,
         notes: 'Phí vận chuyển',
       }];
-
       dataOrder.PointLoyalty = this.totalPoint;
       dataOrder.DeductionLoyalty = this.totalPoint * this.coefficientPoint;
       dataOrder.OrderAmount = this.totalAmount;
@@ -1259,13 +1217,11 @@ export class FormOrderComponent implements OnInit, OnDestroy {
       } else {
         dataOrder.paymentStatus = 'paid';
       }
-
       if (this.dataCombo.length > 0) {
         dataOrder.hasCombo = 1;
       } else {
         dataOrder.hasCombo = 0;
       }
-
       this.loading = true;
       this.orderService.createOrder(dataOrder).then((data) => {
         this.applyPromotion(dataOrder.orderCode, dataOrder.LineDiscounts);
@@ -1285,7 +1241,6 @@ export class FormOrderComponent implements OnInit, OnDestroy {
           logType: AppConstants.LogTypeOrderResolved,
           teamId: this.opp.teamId,
           divisionId: this.opp.divisionId,
-
           // Duy NNEC-426
           oldProcessStatus: this.opp.processStatus,
           newProcessStatus: AppConstants.ticketStatusBought,
@@ -1363,7 +1318,6 @@ export class FormOrderComponent implements OnInit, OnDestroy {
         }
       }
     }
-
     if (this.promotionSelected.length > 0) {
       this.promotionSelected.forEach(element => {
         if (element.promotionType === 1) {
@@ -1382,11 +1336,9 @@ export class FormOrderComponent implements OnInit, OnDestroy {
                 }
               }
             }
-
             if (element.typeId === 1) {
               tP = (Number(shipment.fee) >= tP) ? tP : Number(shipment.fee);
             }
-
             let dName = element.name;
             if (element.coupon_code !== undefined) {
               dName = element.name + '(' + element.coupon_code + ')';
@@ -1613,28 +1565,3 @@ export class FormOrderComponent implements OnInit, OnDestroy {
 
   protected readonly console = console;
 }
-
-// if (pro.productId === productId) {
-//   for (const pr of this.products) {
-//     if (pr.itemId === productId) {
-//       if (pro.rewardType === 2 || pro.rewardType === 1) {
-//         pr.salePrice = pr.originalPrice - pro.rewardDiscount;
-//         pr.check = 1;
-//         pr.promotion.push(pro);
-//         // console.log(pr);
-//       } else {
-//         const pDetail = this.dataP.find(x => x.Id === pro.rewardProductId);
-//         if (pDetail) {
-//           pr.check = 3;
-//           pr.promotion.push(pro);
-//           pr.promotion.productName = pDetail.Name;
-//           pr.promotion.salePrice = pDetail.ProductSkus[0].SalePrice;
-//           pr.promotion.weight = pDetail.ProductSkus[0].WeightGram;
-//           pr.promotion.sku = pDetail.ProductSkus[0].Sku;
-//           // console.log(pr);
-//         }
-//       }
-//     }
-//   }
-// }
-// }
