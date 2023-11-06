@@ -9,6 +9,7 @@ import {
   NbResetPasswordComponent,
 } from '@nebular/auth';
 import {AuthGuard} from './auth-guard.service';
+import "@angular/compiler"
 
 export const routes: Routes = [
   {

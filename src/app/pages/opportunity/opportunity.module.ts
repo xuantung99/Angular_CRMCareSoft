@@ -27,11 +27,11 @@ import {
   NbUserModule,
   NbWindowModule,
 } from '@nebular/theme';
-
 import {NbDateFnsDateModule} from '@nebular/date-fns';
 import {Ng2SmartTableModule} from 'ng2-smart-table';
 import {InterceptService} from '../../@core/services/intercept.service';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
+import {RouterModule} from '@angular/router';
 
 @NgModule({
   imports: [
@@ -60,10 +60,11 @@ import {HTTP_INTERCEPTORS} from '@angular/common/http';
     NbWindowModule.forChild(),
     NbDatepickerModule.forRoot(),
     NbDateFnsDateModule.forChild({format: 'dd-MM-yyyy'}),
+    RouterModule,
   ],
   declarations: [
     OpportunityComponent,
-FormOrderComponent,
+    FormOrderComponent,
     ShowPromotionComponent,
     InsertOppComponent,
     PhoneComponent,
@@ -72,7 +73,6 @@ FormOrderComponent,
     ShowPromotionComponent,
     InsertOppComponent,
   ],
-
   providers: [
     InterceptService,
     {
@@ -82,5 +82,5 @@ FormOrderComponent,
     },
   ],
 })
-
-export class OpportunityModule {}
+export class OpportunityModule {
+}

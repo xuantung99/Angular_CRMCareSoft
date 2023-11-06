@@ -1,23 +1,31 @@
-import { ModuleWithProviders, NgModule, Optional, SkipSelf } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { NbAuthModule, NbPasswordAuthStrategy, NbAuthJWTToken } from '@nebular/auth';
-import { NbSecurityModule, NbRoleProvider } from '@nebular/security';
-import { of as observableOf } from 'rxjs';
+import {ModuleWithProviders, inject, NgModule, Optional, SkipSelf} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {NbAuthModule, NbPasswordAuthStrategy, NbAuthJWTToken} from '@nebular/auth';
+import {NbSecurityModule, NbRoleProvider} from '@nebular/security';
+import {of as observableOf} from 'rxjs';
 import {HttpErrorResponse} from '@angular/common/http';
-import { throwIfAlreadyLoaded } from './module-import-guard';
+import {throwIfAlreadyLoaded} from './module-import-guard';
+
 import {
   LayoutService,
   StateService,
 } from './utils';
 import {PreviousRouteService} from './services/previousRouteService';
+class PreviousRoute {
+  prevRoutePath: string;
+  constructor(prevService: PreviousRouteService) {
+     this.prevRoutePath = prevService?.previousRoutePath.value;
+    console.log(this.prevRoutePath);
+  }
+}
+let prevRouteService = new PreviousRoute();
+console.log(prevRouteService.prevRoutePath);
+
 export class NbSimpleRoleProvider extends NbRoleProvider {
   getRole() {
     return observableOf('guest');
   }
 }
-
-const previousRouteSetvice = new PreviousRouteService();
-previousRouteSetvice.getPreviousUrl()
 
 export function jwtGetter(module, res, options) {
   if (res.body.responseCode !== '00') {
@@ -49,7 +57,7 @@ export const NB_CORE_PROVIDERS = [
           endpoint: 'login',
           method: 'post',
           redirect: {
-            success: '/',
+            success: `/`,
           },
           requireValidToken: true,
         },
@@ -59,11 +67,11 @@ export const NB_CORE_PROVIDERS = [
           redirect: {
             success: '/auth/login',
             failure: '/',
-          }}
+          }
+        }
       })
     ],
   }).providers,
-
   NbSecurityModule.forRoot({
     accessControl: {
       guest: {
@@ -77,10 +85,7 @@ export const NB_CORE_PROVIDERS = [
       },
     },
   }).providers,
-
-  { provide: NbRoleProvider, useClass: NbSimpleRoleProvider },
-  LayoutService,
-  StateService,
+  {provide: NbRoleProvider, useClass: NbSimpleRoleProvider}, LayoutService, StateService,
 ];
 
 @NgModule({
@@ -103,5 +108,6 @@ export class CoreModule {
       providers: [
         ...NB_CORE_PROVIDERS
       ],
-    }}
+    };
+  }
 }

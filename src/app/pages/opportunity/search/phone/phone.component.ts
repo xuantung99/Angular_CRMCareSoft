@@ -1,9 +1,12 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, NavigationEnd, Router, RoutesRecognized} from '@angular/router';
 import {CustomerService} from '../../../../@core/services/customer.service';
 import {OpportunityService} from '../../../../@core/services/opportunity.service';
 import {AppConstants} from '../../../../@core/utils/app.constants';
 import {OrderService} from '../../../../@core/services/order.service';
+import { PreviousRouteService} from '../../../../@core/services/previousRouteService';
+import {filter, pairwise} from 'rxjs/operators';
+
 @Component({
   selector: 'ngx-phone',
   templateUrl: './phone.component.html',
@@ -23,16 +26,25 @@ export class PhoneComponent implements OnInit {
   dataOrder: Array<any> = [];
   dataProduct: Array<any> = [];
   errorLog: string = '';
+  previousUrl: string;
   constructor(
     public route: ActivatedRoute,
     private customerService: CustomerService,
     private opportunityService: OpportunityService,
-    private orderService: OrderService) {
+    private previousRouteService: PreviousRouteService,
+    private router: Router,
+    private orderService: OrderService,) {
     this.route.queryParams.subscribe(params => {
       this.phoneNumber = params['phone'];
     });
   }
   ngOnInit(): void {
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+        console.log('prev:', event.url);
+        this.previousUrl = event.url;
+      });
     // Validate phone number
     if (this.validatePhoneNumber(this.phoneNumber))
       this.customerService.searchUsers(this.phoneNumber).subscribe(data => {

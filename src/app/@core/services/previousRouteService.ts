@@ -1,22 +1,35 @@
 import { Injectable } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router, RoutesRecognized } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
+import { filter, pairwise } from 'rxjs/operators';
+import { Location } from '@angular/common';
 
 @Injectable()
 export class PreviousRouteService {
-  private previousUrl: string;
-  private currentUrl: string;
-  constructor(router: Router) {
-    this.currentUrl = router?.url;
-    router?.events?.subscribe(event => {
-      if (event instanceof NavigationEnd) {
-        this.previousUrl = this.currentUrl;
-        this.currentUrl = event.url;
-      };
-    });
-  }
 
-  public getPreviousUrl() {
-    console.log(this.previousUrl);
-    return this.previousUrl;
+  // save the previous route
+  public previousRoutePath = new BehaviorSubject<string>('');
+
+  constructor(
+    private router: Router,
+    private location: Location
+  ) {
+
+    // ..initial prvious route will be the current path for now
+    this.previousRoutePath.next(this.location.path());
+
+
+    // on every route change take the two events of two routes changed(using pairwise)
+    // and save the old one in a behavious subject to access it in another component
+    // we can use if another component like intro-advertise need the previous route
+    // because he need to redirect the user to where he did came from.
+    this.router.events.pipe(
+      filter(e => e instanceof RoutesRecognized),
+      pairwise(),
+    )
+      .subscribe((event: any[]) => {
+        this.previousRoutePath.next(event[0].urlAfterRedirects);
+      });
+
   }
 }

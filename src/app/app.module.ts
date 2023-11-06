@@ -13,9 +13,8 @@ import {environment} from '../environments/environment';
 import {NbChatModule, NbDatepickerModule,NbDialogModule,NbMenuModule,NbSidebarModule, NbTimepickerModule,NbToastrModule,NbWindowModule} from '@nebular/theme';
 import { NbDateFnsDateModule } from '@nebular/date-fns';
 import { Globals } from './@core/utils/globals';
-import { NgModule } from '@angular/core';
+import {NgModule} from '@angular/core';
 import {PreviousRouteService} from './@core/services/previousRouteService';
-
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -49,7 +48,7 @@ import {PreviousRouteService} from './@core/services/previousRouteService';
       useClass: InterceptService,
       multi: true,
     },
-    Globals,
+    Globals, PreviousRouteService
   ],
 })
 
