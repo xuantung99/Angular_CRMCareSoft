@@ -370,7 +370,7 @@ export class FormOrderComponent implements OnInit, OnDestroy {
 
   getLocation(): void {
     if (this.opp.provinceCode !== null && this.opp.provinceCode !== undefined && this.opp.provinceCode > 0) {
-      const pv = this.provinces.find(x => x.provinceId === this.opp.provinceCode);
+      const pv = this.provinces?.find(x => x.provinceId === this.opp.provinceCode);
       if (pv) {
         this.oppProvinceName = pv.provinceName + ' - ';
       }

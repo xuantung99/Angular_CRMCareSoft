@@ -23,6 +23,7 @@ import {PreviousRouteService} from './@core/services/previousRouteService';
     BrowserAnimationsModule,
     HttpClientModule,
     AppRoutingModule,
+    CoreModule.forRoot(),
     NbSidebarModule.forRoot(),
     NbMenuModule.forRoot(),
     NbDatepickerModule.forRoot(),
@@ -35,7 +36,6 @@ import {PreviousRouteService} from './@core/services/previousRouteService';
     NbChatModule.forRoot({
       messageGoogleMapKey: 'AIzaSyA_wNuCzia92MAmdLRzmqitRGvCF7wCZPY',
     }),
-    CoreModule.forRoot(),
     ThemeModule.forRoot(),
   ],
   bootstrap: [AppComponent],

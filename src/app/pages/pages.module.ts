@@ -11,7 +11,6 @@ import {OpportunityModule} from './opportunity/opportunity.module';
 import {ShowDescriptionComponent} from './showDescription.component';
 import { ClickOutsideDirective } from './ClickedOutside.Directive';
 import { OrderComponent } from './order/order.component';
-import {LoginComponent} from './login/login.component';
 import {FormsModule} from '@angular/forms';
 import "@angular/compiler";
 
@@ -37,7 +36,6 @@ import "@angular/compiler";
     ShowDescriptionComponent,
     ClickOutsideDirective,
     OrderComponent,
-    LoginComponent
   ],
 })
 export class PagesModule {

@@ -1,5 +1,11 @@
 <nb-card *ngIf="errorLog" class="text-center">
-  <nb-card-header class="py-4">{{errorLog}}
+  <nb-card-header class="py-4">
+    <p>{{errorLog}}</p>
+    <div class="py-3">
+      <label for="name" class="px-2">Vui lòng nhập lại số điện thoại: </label>
+      <input id="name" [(ngModel)]="phoneNumber"/>
+    </div>
+    <button (click)="updatePhone()" class="btn btn-danger">Nhập số điện thoại</button>
   </nb-card-header>
 </nb-card>
 <ng-container *ngIf="!errorLog">
@@ -81,7 +87,7 @@
           <td>{{opp.description}}</td>
           <td>
             <div *ngIf="opp.items.length > 0" class="mat-chip">
-              <div *ngFor="let item of opp.items">{{item.productName}} </div>
+              <div *ngFor="let item of opp.items">{{item.productName}}</div>
             </div>
           </td>
           <td>{{opp.createdOn | date:"dd-MM-yyyy hh:mm"}}</td>
@@ -125,7 +131,7 @@
         </tr>
         </tbody>
       </table>
-      <label class="label col-form-label">Danh sách sản phẩm</label>
+      <label class="label col-form-label" >Danh sách sản phẩm</label>
       <table class="table table-hover table-bordered">
         <thead>
         <tr class="heart">

@@ -1,11 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, NavigationEnd, Router, RoutesRecognized} from '@angular/router';
+import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import {CustomerService} from '../../../../@core/services/customer.service';
 import {OpportunityService} from '../../../../@core/services/opportunity.service';
 import {AppConstants} from '../../../../@core/utils/app.constants';
 import {OrderService} from '../../../../@core/services/order.service';
-import { PreviousRouteService} from '../../../../@core/services/previousRouteService';
-import {filter, pairwise} from 'rxjs/operators';
+import {PreviousRouteService} from '../../../../@core/services/previousRouteService';
 
 @Component({
   selector: 'ngx-phone',
@@ -27,6 +26,7 @@ export class PhoneComponent implements OnInit {
   dataProduct: Array<any> = [];
   errorLog: string = '';
   previousUrl: string;
+
   constructor(
     public route: ActivatedRoute,
     private customerService: CustomerService,
@@ -38,15 +38,18 @@ export class PhoneComponent implements OnInit {
       this.phoneNumber = params['phone'];
     });
   }
+
   ngOnInit(): void {
+    this.getInfoByPhone();
+  }
+
+  getInfoByPhone() {
     this.router.events
-      .pipe(filter(event => event instanceof NavigationEnd))
+      // .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
-        console.log('prev:', event.url);
         this.previousUrl = event.url;
       });
-    // Validate phone number
-    if (this.validatePhoneNumber(this.phoneNumber))
+    if (this.validatePhoneNumber(this.phoneNumber)) {
       this.customerService.searchUsers(this.phoneNumber).subscribe(data => {
         // Check if phone number exist
         if (data === null) {
@@ -63,27 +66,33 @@ export class PhoneComponent implements OnInit {
           });
         }
       });
+    }
   }
+
   showPhone(telephone): string {
     return 'xxx' + telephone.slice(-5);
   }
+
   checkPoint(phone: string = '', customerId: number = 0) {
     if ((phone !== null && phone !== undefined && phone.length >= 10) || (customerId !== null && customerId > 0)) {
       this.point = 0;
     }
   }
+
   getListOpp(phone): void {
     this.opportunityService.getOpportuntiesByPhone(phone.slice(-9), 1, 50, -1).then((data: any) => {
       // console.log(data);
       this.dataOpp = data;
     });
   }
+
   showItemName(items, id) {
     const item = items.find(x => x.id === id);
     if (item === undefined) {
       return '';
     } else return item.name;
   }
+
   showOrderStatus(status) {
     const item = this.listOrderStatus.find(x => x.id === status);
     if (item === undefined) {
@@ -92,6 +101,7 @@ export class PhoneComponent implements OnInit {
       return item.name;
     }
   }
+
   validatePhoneNumber(phoneNumber) {
     const regex: RegExp = /((09|03|07|08|05)+([0-9]{8})\b)/g;
     if (phoneNumber !== '') {
@@ -103,5 +113,16 @@ export class PhoneComponent implements OnInit {
       this.errorLog = 'Bạn chưa điền số điện thoại!';
       return false;
     }
+  }
+
+  updatePhone() {
+    this.errorLog = '';
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        phone: this.phoneNumber,
+      },
+    });
+    this.getInfoByPhone();
   }
 }
