@@ -34,7 +34,6 @@ interface CardSettings {
   styleUrls: ['./form-order.component.scss'],
   templateUrl: './form-order.component.html',
 })
-
 export class FormOrderComponent implements OnInit, OnDestroy {
   // Other
   wRef: NbWindowRef;
@@ -157,6 +156,7 @@ export class FormOrderComponent implements OnInit, OnDestroy {
   dataKeywords: any;
   orderInfo: any;
   IdChecked: boolean = false;
+  errorLog: string = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -180,7 +180,8 @@ export class FormOrderComponent implements OnInit, OnDestroy {
     this.route.queryParams.subscribe(params => {
       console.log(params);
       this.oppIdInput = params['ticket_id'];
-      // console.log(this.oppIdInput);
+      this.customerPhone = params['customer_phone'];
+      this.customerFullname= params['customer_name'];
     });
     this.themeService.getJsTheme().pipe(takeWhile(() => this.alive)).subscribe(theme => {
       this.statusCards = this.statusCardsByThemes[theme.name];
@@ -194,47 +195,51 @@ export class FormOrderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.formError.noCustomer = false;
-    this.loadPeople();
-    this.loadKeyword();
-    this.otherService.getAllShipmentVendor().then((data: any) => {
-      this.shipmentList = data;
-      this.shipmentVendor = data.find(x => x.shipmentVendorId === 5);
-    });
-    this.productService.getAllProductDetails().then((data: any) => {
-      this.dataP = data;
-      this.productService.getAllProductInCustomers().then((dataC: any) => {
-        this.dataPC = data;
-        for (const p of dataC) {
-          if (p.type === 2) this.dataPC.push({Id: p.id, type: p.type, Name: p.productName, contents: JSON.parse(p.contents)});
-        }});
-    });
-    this.opportunitySourceService.getAll(1000).then((data: OpportunitySourceModel[]) => {
-      this.oppSource = data;
-    });
-    this.opportunityStatusService.getAll(1000).then((data: OpportunityStatusModel[]) => {
-      this.oppStatus = data;
-    });
-    this.inventoryService.getAll().then(data => {
-      this.inventories = data;
-    });
-    if (typeof this.oppIdInput !== 'undefined' && parseInt(this.oppIdInput, 0) > 0) {
-      this.opp.id = parseInt(this.oppIdInput, 0);
-      this.getOppDetail(this.oppIdInput);
-      this.popup = true;
-    } else {
-      this.routeA.params.subscribe(params => {
-        // console.log(params);
-        this.opp.id = params['ticket_id'] === undefined ? 0 : Number(params['ticket_id']);
-        if (this.opp.id > 0) {
-          this.getOppDetail(this.opp.id);
-        }
+    this.validatePhoneNumber(this.customerPhone);
+    if (!this.errorLog) {
+      this.formError.noCustomer = false;
+      this.loadPeople();
+      this.loadKeyword();
+      this.otherService.getAllShipmentVendor().then((data: any) => {
+        this.shipmentList = data;
+        this.shipmentVendor = data.find(x => x.shipmentVendorId === 5);
+      });
+      this.productService.getAllProductDetails().then((data: any) => {
+        this.dataP = data;
+        this.productService.getAllProductInCustomers().then((dataC: any) => {
+          this.dataPC = data;
+          for (const p of dataC) {
+            if (p.type === 2) this.dataPC.push({Id: p.id, type: p.type, Name: p.productName, contents: JSON.parse(p.contents)});
+          }
+        });
+      });
+      this.opportunitySourceService.getAll(1000).then((data: OpportunitySourceModel[]) => {
+        this.oppSource = data;
+      });
+      this.opportunityStatusService.getAll(1000).then((data: OpportunityStatusModel[]) => {
+        this.oppStatus = data;
+      });
+      this.inventoryService.getAll().then(data => {
+        this.inventories = data;
+      });
+      if (typeof this.oppIdInput !== 'undefined' && parseInt(this.oppIdInput, 0) > 0) {
+        this.opp.id = parseInt(this.oppIdInput, 0);
+        this.getOppDetail(this.oppIdInput);
+        this.popup = true;
+      } else {
+        this.routeA.params.subscribe(params => {
+          // console.log(params);
+          this.opp.id = params['ticket_id'] === undefined ? 0 : Number(params['ticket_id']);
+          if (this.opp.id > 0) {
+            this.getOppDetail(this.opp.id);
+          }
+        });
+      }
+      // console.log(this.oppIdInput, this.opp.id);
+      this.promotionService.CheckApplyWithCombo().then((data: any) => {
+        this.applyWithCombo = data;
       });
     }
-    // console.log(this.oppIdInput, this.opp.id);
-    this.promotionService.CheckApplyWithCombo().then((data: any) => {
-      this.applyWithCombo = data;
-    });
   }
 
   loadPeople() {
@@ -1563,5 +1568,31 @@ export class FormOrderComponent implements OnInit, OnDestroy {
     }
   }
 
+  validatePhoneNumber(phoneNumber) {
+    const regex: RegExp = /((09|03|07|08|05)+([0-9]{8})\b)/g;
+    if (phoneNumber !== '') {
+      if (regex.test(phoneNumber) === false) {
+        this.errorLog = 'Số điện thoại không đúng định dạng!';
+        return false;
+      } else return true;
+    } else {
+      this.errorLog = 'Bạn chưa điền số điện thoại!';
+      return false;
+    }
+  }
+
   protected readonly console = console;
+
+  updatePhone() {
+    this.errorLog = '';
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        ticket_id: this.oppIdInput,
+        customer_phone: this.customerPhone,
+        customer_name: this.customerFullname
+      },
+    });
+    this.validatePhoneNumber(this.customerPhone);
+  }
 }

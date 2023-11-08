@@ -5,6 +5,7 @@ import {OpportunityService} from '../../../../@core/services/opportunity.service
 import {AppConstants} from '../../../../@core/utils/app.constants';
 import {OrderService} from '../../../../@core/services/order.service';
 import {PreviousRouteService} from '../../../../@core/services/previousRouteService';
+import {filter} from 'rxjs/operators';
 
 @Component({
   selector: 'ngx-phone',
@@ -40,20 +41,19 @@ export class PhoneComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.router.events.pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+        this.previousUrl = event.url;
+      });
     this.getInfoByPhone();
   }
 
   getInfoByPhone() {
-    this.router.events
-      // .pipe(filter(event => event instanceof NavigationEnd))
-      .subscribe((event: NavigationEnd) => {
-        this.previousUrl = event.url;
-      });
     if (this.validatePhoneNumber(this.phoneNumber)) {
       this.customerService.searchUsers(this.phoneNumber).subscribe(data => {
         // Check if phone number exist
         if (data === null) {
-          this.errorLog = 'Số điện thoại không tồn tại';
+          this.errorLog = 'Dữ liệu số điện thoại không tồn tại!';
         } else {
           this.customer = data[0];
           this.checkPoint('', this.customer.customerId);
