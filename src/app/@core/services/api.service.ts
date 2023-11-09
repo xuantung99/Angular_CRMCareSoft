@@ -11,7 +11,7 @@ export class ApiService {
   constructor(private http: HttpClient, private notiService: NotiService) {
   }
 
-  call<T>(method, url, queries?, body?, noauth = false) {
+  call<T>(method, url, queries?, body?) {
     const _parent = this;
     const response = new Subject<APIResponse<T>>();
     if (url.indexOf('/') !== 0) {
@@ -107,7 +107,6 @@ export class ApiService {
       pagerPageKey: 'page',
       totalKey: 'total',
     });
-
     return result;
   }
 

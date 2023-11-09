@@ -1,6 +1,7 @@
 import {ApiService} from './api.service';
 import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
+import {OpportunityModel} from '../../model/opportunity.model';
 
 @Injectable({providedIn: 'root'})
 export class OrderService {
@@ -19,8 +20,18 @@ export class OrderService {
   private apiGetOrdersHasCombo = '/api/order/AdminSaleManage/GetOrdersHasCombo';
   private apipassOrderQuotation = '/api/customer_support/v2/Order/PassOrderQuotation';
   private apiGetAllTotalSalesOrderByDay = '/api/order/AdminSaleManage/GetAllTotalSalesOrderByDay';
+  private apiCheckOrderCareSoftById = '/api/customer_support/FcOpportunity/CheckOrderCareSoftId';
 
-  constructor(private api: ApiService) {
+  constructor(private api: ApiService) {}
+
+  public checkOrderCareSoftById(CareSoftId: any) {
+    const response = new Subject<any>();
+    this.api.get(this.apiCheckOrderCareSoftById, {CareSoftId: CareSoftId}).subscribe((res: any) => {
+      if (res.statusCode === 200 && res.data !== null) {
+        response.next(res.data);
+      }
+    });
+    return response.asObservable();
   }
 
   public getOrderInfosByCustomer(customerId: number = 0) {
@@ -64,9 +75,8 @@ export class OrderService {
         } else {
           reject(res.statusCode);
         }
-      });
-    });
-
+      })
+    })
   }
 
   public getInformationShipmentOrder(orderCode) {
@@ -78,6 +88,7 @@ export class OrderService {
       });
     });
   }
+
   public passOrder(model: any = {}) {
     return new Promise((resolve, reject) => {
       this.api.post(this.apiPassOrder, null, model).subscribe((res: any) => {
@@ -89,6 +100,7 @@ export class OrderService {
       });
     });
   }
+
   public cancelSalesOrder(model: any = {}) {
     return new Promise((resolve, reject) => {
       this.api.post(this.apiCancelSalesOrder, null, model).subscribe((res: any) => {
@@ -100,6 +112,7 @@ export class OrderService {
       });
     });
   }
+
   public UploadImgOrder(model: any = {}) {
     return new Promise((resolve, reject) => {
       this.api.post(this.apiUploadImgOrder, null, model).subscribe((res: any) => {
@@ -121,8 +134,6 @@ export class OrderService {
       });
     });
   }
-
-
 
   public getTotalRevenues(requestData) {
     return new Promise((resolve, reject) => {
@@ -181,6 +192,7 @@ export class OrderService {
       });
     });
   }
+
   public passOrderQuotation(model: any = {}) {
     return new Promise((resolve, reject) => {
       this.api.post(this.apipassOrderQuotation, null, model).subscribe((res: any) => {

@@ -1,17 +1,17 @@
-<nb-card *ngIf="errorLog" class="text-center">
+<nb-card *ngIf="errorLog === ''" class="text-center"></nb-card>
+<nb-card *ngIf="errorLog === 'Đơn hàng đã được tạo trên ticket!' || errorLog === 'Cập nhật lại số điện thoại khách hàng' || errorLog === 'Bạn chưa điền số điện thoại!'"
+  class="text-center">
   <nb-card-header>
-    <p>{{errorLog}}</p>
-    <div class="py-3">
-      <label for="name" class="px-2">Vui lòng nhập lại số điện thoại: </label>
-      <input id="name" [(ngModel)]="customerPhone"/>
-    </div>
-    <button (click)="updatePhone()" class="btn btn-danger">Nhập số điện thoại</button>
+    <h6 class="py-4">{{errorLog}}</h6>
+<!--        <div class="py-3" *ngIf="errorLog !== 'Id không hợp lệ' ">-->
+<!--          <label for="name" class="px-2">Vui lòng nhập lại số điện thoại: </label>-->
+<!--          <input id="name" [(ngModel)]="customerPhone"/>-->
+<!--        </div>-->
+<!--        <button *ngIf="errorLog !== 'Id không hợp lệ' " (click)="updatePhone()" class="btn btn-danger">Nhập số điện thoại</button>-->
   </nb-card-header>
 </nb-card>
-<!--<nb-card *ngIf="!IdChecked" class="text-center">-->
-<!--  <nb-card-header class="py-4">Id không hợp lệ</nb-card-header>-->
-<!--</nb-card>-->
-<nb-tabset *ngIf="!errorLog" fullWidth #tabDetail [nbSpinner]="loading" nbSpinnerSize="giant" nbSpinnerStatus="primary">
+<nb-tabset *ngIf="errorLog === 'No error'" fullWidth #tabDetail [nbSpinner]="loading" nbSpinnerSize="giant"
+           nbSpinnerStatus="primary">
   <nb-tab tabTitle="Thông tin đơn hàng" #tabOrder>
     <nb-card>
       <nb-card-header>Thông tin người dùng</nb-card-header>
@@ -19,7 +19,8 @@
         <div class="form-group row">
           <label class="label col-sm-2 col-form-label">Họ tên</label>
           <div class="col-sm-4">
-            <input [(ngModel)]="customerFullname" [ngModelOptions]="{standalone: true}" nbInput type="text" disabled fullWidth/>
+            <input [(ngModel)]="customerFullname" [ngModelOptions]="{standalone: true}" nbInput type="text" disabled
+                   fullWidth/>
             <div class="form-error" *ngIf="formError.fullName == true">Họ và tên không được phép để trống</div>
           </div>
         </div>
@@ -34,25 +35,26 @@
         <div class="form-group row">
           <label class="label col-sm-2 col-form-label">Email</label>
           <div class="col-sm-4">
-            <input [(ngModel)]="customerEmail" [ngModelOptions]="{standalone: true}" nbInput type="text" disabled fullWidth/>
+            <input [(ngModel)]="customerEmail" [ngModelOptions]="{standalone: true}" nbInput type="text" disabled
+                   fullWidth/>
           </div>
         </div>
       </nb-card-body>
     </nb-card>
     <nb-card>
-      <nb-card-header>Địa chị nhận hàng</nb-card-header>
+      <nb-card-header>Địa chỉ nhận hàng</nb-card-header>
       <nb-card-body>
         <div class="form-group row">
           <label class="label col-sm-2 col-form-label">Chọn địa chỉ</label>
           <div class="col-sm-6">
-            <ng-select [items]="shipMents" [(ngModel)]="shippingAddressId" (change)="selectShipment($event)" bindValue="shippingAddressId" placeholder="Danh sách địa chỉ">
+            <ng-select [items]="shipMents" [(ngModel)]="shippingAddressId" (change)="selectShipment($event)"
+                       bindValue="shippingAddressId" placeholder="Danh sách địa chỉ">
               <ng-template ng-label-tmp let-item="item">
                 <span>{{ item.address }} - {{ item.subDistrictName }} - {{ item.districtName }}
                   - {{ item.provinceName }}</span>
               </ng-template>
               <ng-template ng-option-tmp let-item="item">
-                <span>{{item.address}} - {{item.subDistrictName}} - {{item.districtName}}
-                  - {{item.provinceName}}</span>
+                <span>{{item.address}} - {{item.subDistrictName}} - {{item.districtName}} - {{item.provinceName}}</span>
               </ng-template>
             </ng-select>
           </div>
@@ -78,7 +80,8 @@
             <div class="form-group row">
               <label class="label col-sm-4 col-form-label">Số điện thoại *</label>
               <div class="col-sm-8">
-                <input [(ngModel)]="shipminetPhone" [ngModelOptions]="{standalone: true}" nbInput type="text" fullWidth/>
+                <input [(ngModel)]="shipminetPhone" [ngModelOptions]="{standalone: true}" nbInput type="text"
+                       fullWidth/>
                 <div class="form-error" *ngIf="formError.shipminetPhone == true">Bạn hãy số điện thoại người nhận hàng
                 </div>
               </div>
@@ -109,7 +112,9 @@
         <div class="form-group row">
           <label class="label col-sm-2 col-form-label"></label>
           <div class="col-sm-10">
-            <textarea rows="5" name="shipAddressLine1" [(ngModel)]="shipAddressLine1" [ngModelOptions]="{standalone: true}" nbInput fullWidth placeholder="Địa chỉ nhận hàng"></textarea>
+            <textarea rows="5" name="shipAddressLine1" [(ngModel)]="shipAddressLine1"
+                      [ngModelOptions]="{standalone: true}" nbInput fullWidth
+                      placeholder="Địa chỉ nhận hàng"></textarea>
             <div class="form-error" *ngIf="formError.shipAddressLine1 == true">Bạn hãy nhập địa chỉ nhận hàng</div>
           </div>
         </div>
@@ -121,14 +126,13 @@
           </div>
         </div>
       </nb-card-body>
-    </nb-card>
-    <nb-card>
       <nb-card-header>
         <div class="col-12">
           <div class="row">
             <div class="col-sm-2">Tìm kiếm sản phẩm</div>
             <div class="col-sm-6">
-              <ng-select [items]="dataPC" [(ngModel)]="productId" (change)="selectProduct($event)" bindValue="Id" bindLabel="Name" placeholder="Chọn sản phẩm"></ng-select>
+              <ng-select [items]="dataPC" [(ngModel)]="productId" (change)="selectProduct($event)" bindValue="Id"
+                         bindLabel="Name" placeholder="Chọn sản phẩm"></ng-select>
             </div>
             <div class="buttons-row col-sm-4">
               <button (click)="addProductToOrder()" type="button" nbButton status="info">Thêm SP</button>
@@ -160,14 +164,15 @@
                       <input type="radio" name="color" value="no" (click)="updatePromotion(product, 0)"> Không áp dụng
                     </label>
                     <label *ngFor="let promotion of product.promotion">
-                      <input type="radio" name="color" [value]="promotion" (click)="updatePromotion(product, promotion)"> {{promotion.promotionName}}
+                      <input type="radio" name="color" [value]="promotion"
+                             (click)="updatePromotion(product, promotion)"> {{promotion.promotionName}}
                     </label>
                   </div>
                 </td>
                 <td>
                   <input style="margin: 5px;" class="input-number" nbInput [(ngModel)]="product.quantity"
                          [ngModelOptions]="{standalone: true}" placeholder="Số lượng"
-                         (ngModelChange)="changeQuantity($event,i+1,false); console.log(products)"/>
+                         (ngModelChange)="changeQuantity($event,i+1,false)"/>
                 </td>
                 <td>
                   <span *ngIf="product.salePrice === product.originalPrice">{{product.originalPrice|number}}</span>

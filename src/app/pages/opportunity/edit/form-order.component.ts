@@ -35,7 +35,6 @@ interface CardSettings {
   templateUrl: './form-order.component.html',
 })
 export class FormOrderComponent implements OnInit, OnDestroy {
-  // Other
   wRef: NbWindowRef;
   peopleInput$ = new EventEmitter<string>();
   keywordInput$ = new EventEmitter<string>();
@@ -178,10 +177,9 @@ export class FormOrderComponent implements OnInit, OnDestroy {
     private authService: NbAuthService,
     @Inject(ActivatedRoute) private routeA: ActivatedRoute, private noti: NotiService) {
     this.route.queryParams.subscribe(params => {
-      console.log(params);
       this.oppIdInput = params['ticket_id'];
       this.customerPhone = params['customer_phone'];
-      this.customerFullname= params['customer_name'];
+      this.customerFullname = params['customer_name'];
     });
     this.themeService.getJsTheme().pipe(takeWhile(() => this.alive)).subscribe(theme => {
       this.statusCards = this.statusCardsByThemes[theme.name];
@@ -195,8 +193,14 @@ export class FormOrderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.validatePhoneNumber(this.customerPhone);
-    if (!this.errorLog) {
+    this.getOrderDetail();
+  }
+
+  getOrderDetail() {
+    if (this.validatePhoneNumber(this.customerPhone)) {
+      this.orderService.checkOrderCareSoftById(this.oppIdInput.toString()).subscribe(data => {
+        if (data !== 0) this.errorLog = 'Đơn hàng đã được tạo trên ticket!';
+      });
       this.formError.noCustomer = false;
       this.loadPeople();
       this.loadKeyword();
@@ -228,7 +232,6 @@ export class FormOrderComponent implements OnInit, OnDestroy {
         this.popup = true;
       } else {
         this.routeA.params.subscribe(params => {
-          // console.log(params);
           this.opp.id = params['ticket_id'] === undefined ? 0 : Number(params['ticket_id']);
           if (this.opp.id > 0) {
             this.getOppDetail(this.opp.id);
@@ -457,10 +460,6 @@ export class FormOrderComponent implements OnInit, OnDestroy {
       }
     }
   }
-
-  // end
-  // action
-  // start
 
   calcUseOfDay(dataP) {
     if (dataP.length > 0) {
@@ -721,14 +720,6 @@ export class FormOrderComponent implements OnInit, OnDestroy {
     }
   }
 
-  assignCustomer() {
-    if (this.customer && this.customer.customerId) {
-      this.opportunityService.assigncustomer(this.opp.id, this.customer.customerId).catch(ex => {
-        this.noti.error('Không gán được khách hàng vào ticket này!');
-      });
-    }
-  }
-
   selectShipment(ship) {
     if (ship !== null) {
       this.shipminetPhone = ship.phone;
@@ -937,7 +928,6 @@ export class FormOrderComponent implements OnInit, OnDestroy {
       },
     );
     this.promotionService.getByMultipleProductsV2(promotionModel).subscribe((data: any) => {
-      // console.log(data);
       if (data.length > 0) {
         this.products[index - 1].promotion = data;
       }
@@ -1570,18 +1560,11 @@ export class FormOrderComponent implements OnInit, OnDestroy {
 
   validatePhoneNumber(phoneNumber) {
     const regex: RegExp = /((09|03|07|08|05)+([0-9]{8})\b)/g;
-    if (phoneNumber !== '') {
-      if (regex.test(phoneNumber) === false) {
-        this.errorLog = 'Số điện thoại không đúng định dạng!';
-        return false;
-      } else return true;
-    } else {
-      this.errorLog = 'Bạn chưa điền số điện thoại!';
+    if (regex.test(phoneNumber) === false) {
+      this.errorLog = 'Cập nhật lại số điện thoại khách hàng';
       return false;
-    }
+    } else return true;
   }
-
-  protected readonly console = console;
 
   updatePhone() {
     this.errorLog = '';
