@@ -27,8 +27,7 @@
         <div class="form-group row">
           <label class="label col-sm-2 col-form-label">Số điện thoại</label>
           <div class="col-sm-4">
-            <input [(ngModel)]="customerPhone" [ngModelOptions]="{standalone: true}" (ngModelChange)="addPhone()"
-                   nbInput type="text" disabled fullWidth/>
+            <input [(ngModel)]="customerPhone" [ngModelOptions]="{standalone: true}" (ngModelChange)="addPhone()" nbInput type="text" disabled fullWidth/>
             <div class="form-error" *ngIf="formError.phone == true">Số điện thoại không được phép để trống</div>
           </div>
         </div>
