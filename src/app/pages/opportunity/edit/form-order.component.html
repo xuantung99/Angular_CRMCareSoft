@@ -1,5 +1,5 @@
 <nb-card *ngIf="errorLog === ''" class="text-center"></nb-card>
-<nb-card *ngIf="errorLog === 'Đơn hàng đã được tạo trên ticket!' || errorLog === 'Cập nhật lại số điện thoại khách hàng' || errorLog === 'Bạn chưa điền số điện thoại!'"
+<nb-card *ngIf="errorLog === 'Đơn hàng đã được tạo trên ticket!' || errorLog === 'Cập nhật lại số điện thoại khách hàng'"
   class="text-center">
   <nb-card-header>
     <h6 class="py-4">{{errorLog}}</h6>

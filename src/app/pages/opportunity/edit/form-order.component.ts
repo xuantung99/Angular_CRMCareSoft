@@ -175,7 +175,8 @@ export class FormOrderComponent implements OnInit, OnDestroy {
     private inventoryService: InventoryService,
     private router: Router,
     private authService: NbAuthService,
-    @Inject(ActivatedRoute) private routeA: ActivatedRoute, private noti: NotiService) {
+    @Inject(ActivatedRoute) private routeA: ActivatedRoute,
+    private noti: NotiService) {
     this.route.queryParams.subscribe(params => {
       this.oppIdInput = params['ticket_id'];
       this.customerPhone = params['customer_phone'];
@@ -193,56 +194,57 @@ export class FormOrderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.getOrderDetail();
+    if (this.validatePhoneNumber(this.customerPhone)) {
+      this.orderService.checkOrderCareSoftById(this.oppIdInput.toString()).subscribe(data => {
+        console.log(data);
+        if (data !== 0) this.errorLog = 'Đơn hàng đã được tạo trên ticket!';
+        else this.getOrderDetail();
+      });
+    }
   }
 
   getOrderDetail() {
-    if (this.validatePhoneNumber(this.customerPhone)) {
-      this.orderService.checkOrderCareSoftById(this.oppIdInput.toString()).subscribe(data => {
-        if (data !== 0) this.errorLog = 'Đơn hàng đã được tạo trên ticket!';
+    this.errorLog = 'No error';
+    this.formError.noCustomer = false;
+    this.loadPeople();
+    this.loadKeyword();
+    this.otherService.getAllShipmentVendor().then((data: any) => {
+      this.shipmentList = data;
+      this.shipmentVendor = data.find(x => x.shipmentVendorId === 5);
+    });
+    this.productService.getAllProductDetails().then((data: any) => {
+      this.dataP = data;
+      this.productService.getAllProductInCustomers().then((dataC: any) => {
+        this.dataPC = data;
+        for (const p of dataC) {
+          if (p.type === 2) this.dataPC.push({Id: p.id, type: p.type, Name: p.productName, contents: JSON.parse(p.contents)});
+        }
       });
-      this.formError.noCustomer = false;
-      this.loadPeople();
-      this.loadKeyword();
-      this.otherService.getAllShipmentVendor().then((data: any) => {
-        this.shipmentList = data;
-        this.shipmentVendor = data.find(x => x.shipmentVendorId === 5);
-      });
-      this.productService.getAllProductDetails().then((data: any) => {
-        this.dataP = data;
-        this.productService.getAllProductInCustomers().then((dataC: any) => {
-          this.dataPC = data;
-          for (const p of dataC) {
-            if (p.type === 2) this.dataPC.push({Id: p.id, type: p.type, Name: p.productName, contents: JSON.parse(p.contents)});
-          }
-        });
-      });
-      this.opportunitySourceService.getAll(1000).then((data: OpportunitySourceModel[]) => {
-        this.oppSource = data;
-      });
-      this.opportunityStatusService.getAll(1000).then((data: OpportunityStatusModel[]) => {
-        this.oppStatus = data;
-      });
-      this.inventoryService.getAll().then(data => {
-        this.inventories = data;
-      });
-      if (typeof this.oppIdInput !== 'undefined' && parseInt(this.oppIdInput, 0) > 0) {
-        this.opp.id = parseInt(this.oppIdInput, 0);
-        this.getOppDetail(this.oppIdInput);
-        this.popup = true;
-      } else {
-        this.routeA.params.subscribe(params => {
-          this.opp.id = params['ticket_id'] === undefined ? 0 : Number(params['ticket_id']);
-          if (this.opp.id > 0) {
-            this.getOppDetail(this.opp.id);
-          }
-        });
-      }
-      // console.log(this.oppIdInput, this.opp.id);
-      this.promotionService.CheckApplyWithCombo().then((data: any) => {
-        this.applyWithCombo = data;
-      });
-    }
+    });
+    this.opportunitySourceService.getAll(1000).then((data: OpportunitySourceModel[]) => {
+      this.oppSource = data;
+    });
+    this.opportunityStatusService.getAll(1000).then((data: OpportunityStatusModel[]) => {
+      this.oppStatus = data;
+    });
+    this.inventoryService.getAll().then(data => {
+      this.inventories = data;
+    });
+    if (typeof this.oppIdInput !== 'undefined' && parseInt(this.oppIdInput, 0) > 0) {
+      this.opp.id = parseInt(this.oppIdInput, 0);
+      this.getOppDetail(this.oppIdInput);
+      this.popup = true;
+    } else {
+      this.routeA.params.subscribe(params => {
+        this.opp.id = params['ticket_id'] === undefined ? 0 : Number(params['ticket_id']);
+        if (this.opp.id > 0) {
+          this.getOppDetail(this.opp.id);
+        }}
+      )}
+    // console.log(this.oppIdInput, this.opp.id);
+    this.promotionService.CheckApplyWithCombo().then((data: any) => {
+      this.applyWithCombo = data;
+    });
   }
 
   loadPeople() {
@@ -254,7 +256,7 @@ export class FormOrderComponent implements OnInit, OnDestroy {
     ).subscribe(items => {
       this.dataCustomer = items;
       this.peopleLoading = false;
-    }, (err) => {
+    }, () => {
       this.dataCustomer = [];
       this.peopleLoading = false;
     });
@@ -1563,7 +1565,8 @@ export class FormOrderComponent implements OnInit, OnDestroy {
     if (regex.test(phoneNumber) === false) {
       this.errorLog = 'Cập nhật lại số điện thoại khách hàng';
       return false;
-    } else return true;
+    }
+    else return true;
   }
 
   updatePhone() {

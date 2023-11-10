@@ -49,12 +49,12 @@ export class LocationService {
       } else {
         resolve(JSON.parse(district));
       }
-    });
+    })
   }
 
   public getAllSubDistrict() {
     return new Promise((resolve, reject) => {
-      const subDistrict = localStorage.getItem('data_subDistrict');
+      const subDistrict = localStorage.getItem('data_subDistrict')
       if (subDistrict === null) {
         this.api.get(this.apiAllSubDistrict).subscribe((res: any) => {
           if (res.statusCode === 200 && res.data !== null) {
@@ -63,11 +63,11 @@ export class LocationService {
           } else {
             reject([]);
           }
-        });
+        })
       } else {
         resolve(JSON.parse(subDistrict));
       }
-    });
+    })
   }
 
   public getDistrictByProvinceId(provinceId) {
@@ -95,7 +95,7 @@ export class LocationService {
         const dt = JSON.parse(subDistrict);
         resolve(dt.filter(x => x.districtId === Number(districtId)));
       }
-    });
+    })
   }
 
   public getProvinceById(provinceId) {

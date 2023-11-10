@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {ActivatedRoute, CanActivate, Router} from '@angular/router';
+import {CanActivate, Router} from '@angular/router';
 import {NbAuthService} from '@nebular/auth';
 import {tap} from 'rxjs/operators';
 import {PreviousRouteService} from './@core/services/previousRouteService';
